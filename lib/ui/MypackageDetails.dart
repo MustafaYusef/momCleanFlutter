@@ -7,6 +7,7 @@ import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/MyCartScreen.dart';
 import 'package:mom_clean/ui/category.dart';
 import 'package:mom_clean/ui/mapScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'MypackageScreen.dart';
 import 'custumWidget/customDrawer.dart';
@@ -30,10 +31,27 @@ class _MypackageDetailsState extends State<MypackageDetails> {
 
   int count = 0;
 
+ int notifNum=0;
+  int cartNum=0;
+
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         endDrawer: drawar(index: 4),
+         endDrawer: drawar(index: 4,notifNum: notifNum,cartNum: cartNum,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

@@ -29,8 +29,14 @@ int status;// check if just wash or drywach or both (1,2,3)
   List<Object> get props => [item_id,countWach,countdryWash,status];
 }
 class FetchCart extends CartEvent {
-  
-
+   
+    
+}
+class DeleteItemCart extends CartEvent {
+   int item_id;
+   DeleteItemCart(this.item_id);
+  @override
+  List<Object> get props => [item_id];
 }
 class ReturnToInitial extends CartEvent{
 
@@ -65,6 +71,8 @@ class CartLoaded extends CartState {
   @override
   List<Object> get props => [cart];
 }
+
+class CartItemDeleted extends CartState {}
 
 
 class CartBloc extends Bloc<CartEvent, CartState> {
@@ -122,6 +130,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                  yield CartLoaded(cart: cart);
           return;
              }
+         
+         
+        
+        
+      } on SocketException catch (_) {
+        yield CartNetworkError();
+      }catch(_){
+          yield CartError(_.toString());
+
+      }
+    }else if(event is DeleteItemCart){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString('token');
+      try {
+     
+          yield CartLoading();
+        
+            final cart = await Repo.deleteItemFromCart(token,event.item_id);
+          yield CartItemDeleted();
+          return;
          
          
         

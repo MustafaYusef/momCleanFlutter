@@ -68,14 +68,27 @@ class MapScreenState extends State<MapScreen> {
           }),
           position: LatLng(lat, lon)));
     });
+getNum();
+
   }
+    int notifNum=0;
+  int cartNum=0;
+
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
 
   bool mapType = true;
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        endDrawer: drawar(index: 0),
+        endDrawer: drawar(index: 0,notifNum:notifNum,cartNum:cartNum ,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -95,6 +108,7 @@ class MapScreenState extends State<MapScreen> {
       body: SafeArea(
         child: Stack(children: <Widget>[
           GoogleMap(
+            rotateGesturesEnabled: true,
             markers: Set.from(markers),
             mapType: mapType ? MapType.normal : MapType.satellite,
             initialCameraPosition: _kGooglePlex,
@@ -170,16 +184,16 @@ class MapScreenState extends State<MapScreen> {
             alignment: Alignment.bottomCenter,
             child: !isLoading
                 ? Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
                     width: MediaQuery.of(context).size.width,
-                    height: 60,
+                    height: 55,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: RaisedButton(
-                          color: Color(0xff2498A1),
+                          color:Theme.of(context).primaryColor,
                           elevation: 5,
                           child: Directionality(
                             textDirection: TextDirection.rtl,
@@ -195,10 +209,13 @@ class MapScreenState extends State<MapScreen> {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             var token = await prefs.getString('token');
+
                             if (widget.id == null) {
                               try {
                                 final res =
                                     await repo.makeNormalOrder(token, lat, lon);
+                                    showAlertDialog(context);
+                                    
                               } on SocketException catch (_) {
                                 Toast.show("لا يوجد اتصال بالشبكة", context,
                                     duration: Toast.LENGTH_LONG,
@@ -213,6 +230,7 @@ class MapScreenState extends State<MapScreen> {
                                 final res =
                                     await repo.makePackageOrder(token, lat, lon, widget.sum, widget.itemsId
                                     , widget.counts,widget.newcounts, widget.id);
+                                     showAlertDialog(context);
                               } on SocketException catch (_) {
                                 Toast.show("لا يوجد اتصال بالشبكة", context,
                                     duration: Toast.LENGTH_LONG,
@@ -231,10 +249,7 @@ class MapScreenState extends State<MapScreen> {
                                     duration: Toast.LENGTH_LONG,
                                     gravity: Toast.BOTTOM);
                               
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) {
-                              return OrderScreen();
-                            }));
+                            
                           }),
                     ),
                   )
@@ -250,7 +265,63 @@ class MapScreenState extends State<MapScreen> {
       ),
     );
   }
+ showAlertDialog(BuildContext context) {
+    // set up the buttons
+ 
+    Widget continueButton = Container(
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    width: 100,
+                    height: 50,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: RaisedButton(
+                          color:Theme.of(context).primaryColor,
+                          elevation: 5,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text("تم",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                          ),
+                          onPressed: () async {
+                           Navigator.of(context).pop();
+                           Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (_) {
+                              return OrderScreen();
+                            }));
+                          }),
+                    ),
+                  );
 
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+
+      title: Directionality(textDirection: TextDirection.rtl,
+        child: Text("شكرا ألك لأنك طلبت من عدنا ")),
+      content: Directionality(
+        textDirection: TextDirection.rtl,
+              child: Text(
+            "راح نتصل بيك قريبا",style: TextStyle(color: Color(0xffFFB300),
+            fontWeight: FontWeight.bold,fontSize: 18),),
+      ),
+      actions: [
+      
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   // Future<void> _goToTheLake() async {
   //   final GoogleMapController controller = await _controller.future;
   //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraUpdate.newCameraPosition( CameraPosition(

@@ -75,6 +75,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
      
           yield ProfileLoading();
           final profile = await Repo.getProfile(token);
+           
+ SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString('image',profile.data.profile.photo);
+       await prefs.setString('name',profile.data.profile.name);
+  
           yield ProfileLoaded( profile:profile);
           return;
         

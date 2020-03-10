@@ -22,11 +22,33 @@ import 'custumWidget/time.dart';
 //   _MyNotificationScreenState createState() => new _MyNotificationScreenState();
 // }
 
-class MyNotificationScreen extends StatelessWidget {
+class MyNotificationScreen extends StatefulWidget {
+  @override
+  _MyNotificationScreenState createState() => _MyNotificationScreenState();
+}
+
+class _MyNotificationScreenState extends State<MyNotificationScreen> {
+ int notifNum=0;
+  int cartNum=0;
+
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer: drawar(index: 1),
+        endDrawer: drawar(index: 1,notifNum: notifNum,cartNum: cartNum,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

@@ -22,6 +22,7 @@ import 'package:mom_clean/ui/packAndMyPackageScreen.dart';
 import 'package:mom_clean/ui/packagesScreen.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 // For each of the above functions, you can also pass in a
@@ -83,6 +84,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _current = 0;
 
+  int notifNum=0;
+  int cartNum=0;
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
   @override
   Widget build(BuildContext context) {
     OneSignal.shared.init("5f0a5368-692a-48b4-8420-95fae35c1ef6", iOSSettings: {
@@ -105,14 +121,15 @@ class _MainScreenState extends State<MainScreen> {
       statusBarColor:
           Colors.lightBlue[900], //or set color with: Color(0xFF0000FF)
     ));
+   
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: drawar(index: 0),
+      endDrawer: drawar(index: 0,notifNum:notifNum,cartNum:cartNum),
       body: Builder(builder: (cont) {
         return SafeArea(
           child: Column(
             children: <Widget>[
-              myAppBar(cont: cont),
+              myAppBar(cont: cont,notifNum:notifNum,cart:cartNum),
               Expanded(
                 child: BlocProvider(
                   create: (context) {

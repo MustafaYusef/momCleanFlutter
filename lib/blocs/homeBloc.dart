@@ -7,6 +7,7 @@ import 'package:location/location.dart';
 import 'package:mom_clean/models/homeBanars.dart';
 import 'package:mom_clean/models/myPackageRes.dart';
 import 'package:mom_clean/models/myRequest.dart';
+import 'package:mom_clean/models/notificAndCartnum.dart';
 import 'package:mom_clean/models/orders.dart';
 import 'package:mom_clean/models/packagesRes.dart';
 import 'package:mom_clean/models/profileRes.dart';
@@ -81,15 +82,16 @@ class HomeNetworkError extends HomeState {}
 class HomeLoaded extends HomeState {
   final HomeBanners package;
 final OrdersRes orders;
+
   HomeLoaded({this.package,this.orders});
 
- HomeLoaded copyWith({
-    profileRes profile,
-  }) {
-    return HomeLoaded(
-      package: package ?? this.package,orders: orders ?? this.orders
-    );
-  }
+//  HomeLoaded copyWith({
+//     profileRes profile,
+//   }) {
+//     return HomeLoaded(
+//       package: package ?? this.package,orders: orders ?? this.orders
+//     );
+//   }
   @override
   List<Object> get props => [package,orders];
 }
@@ -186,7 +188,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
          print(_locationData.latitude);
           yield HomeLoading();
           final package = await Repo.getHomePackages(_locationData.longitude, _locationData.latitude);
-    //  print(package.data.packages[0].nameAr);
+    
         // yield HomeLoaded( package:package,orders:null);
         if(token==""||token==null){
 
@@ -195,7 +197,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             return;
         }else{
  final orders=await Repo.getHomOrder(token);
-        
+        final notifAndCartNum=await Repo.getNotifcAndCart(token);
+         print("cart    "+notifAndCartNum.data.statistics.cart.toString());
+          print("notification    "+notifAndCartNum.data.statistics.notifications.toString());
+        await prefs.setInt("notification", notifAndCartNum.data.statistics.notifications);
+         await prefs.setInt("cart", notifAndCartNum.data.statistics .cart);
           yield HomeLoaded( package:package,orders:orders);
           return;
         }

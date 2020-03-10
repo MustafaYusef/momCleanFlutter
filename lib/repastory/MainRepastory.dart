@@ -11,6 +11,7 @@ import 'package:mom_clean/models/myPackageDetailsRes.dart';
 import 'package:mom_clean/models/myPackageRes.dart';
 import 'package:mom_clean/models/myRequest.dart';
 import 'package:mom_clean/models/normalOrderDetails.dart';
+import 'package:mom_clean/models/notificAndCartnum.dart';
 import 'package:mom_clean/models/notificationRes.dart';
 import 'package:mom_clean/models/orders.dart';
 import 'package:mom_clean/models/packageOrders.dart';
@@ -183,7 +184,16 @@ MyNotificationRes MyNotificationResFromJson(String str) => MyNotificationRes.fro
       throw Exception('حدث خطأ ما');
     }
   }
-
+ Future<notificAndCartRes> getNotifcAndCart(String token) async {
+    final response = await get(
+        baseUrl+"auth/home",headers: {"Authorization":token});
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return notificAndCartResFromJson(response.body);
+    } else {
+      throw Exception('حدث خطأ ما');
+    }
+  }
+notificAndCartRes notificAndCartResFromJson(String str) => notificAndCartRes.fromJson(json.decode(str));
 
   Future<MyRequestRes> getMyRequest(String token) async {
     final response = await post(

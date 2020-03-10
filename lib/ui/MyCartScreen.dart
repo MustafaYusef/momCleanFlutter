@@ -5,6 +5,7 @@ import 'package:mom_clean/blocs/CartBloc.dart';
 import 'package:mom_clean/models/cartRes.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/mapScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 import '../main.dart';
@@ -17,10 +18,30 @@ class MyCartScreen extends StatefulWidget {
 }
 
 class _MyCartScreenState extends State<MyCartScreen> {
+  int notifNum = 0;
+  int cartNum = 0;
+  @override
+  initState() {
+    super.initState();
+    getNum();
+  }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: drawar(index: 7),
+      endDrawer: drawar(
+        index: 7,
+        notifNum: notifNum,
+        cartNum: cartNum,
+      ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -32,9 +53,11 @@ class _MyCartScreenState extends State<MyCartScreen> {
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("سلة المشتريات",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "سلة المشتريات",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
       body: BlocProvider(
@@ -56,7 +79,14 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       child: ListView.builder(
                         itemCount: state.cart.data.myCart.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return buildCardOnce(state.cart.data.myCart[index]);
+                          return Dismissible(
+                            child: buildCardOnce(state.cart.data.myCart[index]),
+                            key: Key(index.toString()),
+                          
+                            onDismissed: (direction)  {
+                              showAlertDialog(context,state.cart.data.myCart[index].id);
+                            },
+                          );
                         },
                       ),
                     ),
@@ -127,46 +157,102 @@ class _MyCartScreenState extends State<MyCartScreen> {
           if (state is CartError) {
             return networkError();
           }
-          if(state is CartIsEmpty){
-               return Center(
-        child: Directionality(
-      textDirection: TextDirection.rtl,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(Icons.remove_shopping_cart ,size: 100,color: Theme.of(context).primaryColor,),
-          SizedBox(height: 10,),
-          Text("السلة فارغة",style: TextStyle(fontSize: 20),),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            margin: EdgeInsets.only(top: 10, bottom: 20, left: 60, right: 60),
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  elevation: 5,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text("رجوع",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+          if (state is CartIsEmpty) {
+            return Center(
+                child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.remove_shopping_cart,
+                    size: 100,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () {
-                 
-                   Navigator.of(context).pop();
-                  }),
-            ),
-          ),
-        ],
-      ),
-    ));
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "السلة فارغة",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.only(
+                        top: 10, bottom: 20, left: 60, right: 60),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: RaisedButton(
+                          color: Theme.of(context).primaryColor,
+                          elevation: 5,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text("رجوع",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+            ));
           }
         }),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context,int id) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Directionality(textDirection: TextDirection.rtl,
+        child: Text("خروج")),
+      onPressed: ()async {
+       await BlocProvider.of<CartBloc>(context).add(FetchCart());
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Directionality(textDirection: TextDirection.rtl,
+        child: Text("حذف")),
+      onPressed: () async {
+        await BlocProvider.of<CartBloc>(context)
+            .add(DeleteItemCart(id));
+        Toast.show("تم حذف العنصر من السلة", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        BlocProvider.of<CartBloc>(context).add(FetchCart());
+      
+      Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Directionality(textDirection: TextDirection.rtl,
+        child: Text("هل تريد حذف هذا العنصر من السلة؟")),
+      // content: Text(
+      //     "Would you like to continue learning how to use Flutter alerts?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
@@ -277,7 +363,10 @@ class _MyCartScreenState extends State<MyCartScreen> {
                           ],
                         ),
                       ),
-                      Text(item.nameAr,style: TextStyle(fontSize: 15,color: Colors.grey[800]),),
+                      Text(
+                        item.nameAr,
+                        style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                      ),
                       ClipRRect(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),

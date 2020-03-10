@@ -6,6 +6,7 @@ import 'package:mom_clean/main.dart';
 import 'package:mom_clean/models/packagesRes.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/packageDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth/profile.dart';
 import 'custumWidget/customDrawer.dart';
@@ -17,10 +18,26 @@ class packageScreen extends StatefulWidget {
 }
 
 class _packageScreenState extends State<packageScreen> {
+    int notifNum=0;
+  int cartNum=0;
+
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       endDrawer: drawar(index: 2),
+       endDrawer: drawar(index: 2,notifNum: notifNum,cartNum:cartNum ,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

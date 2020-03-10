@@ -1,17 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mom_clean/ui/MypackageScreen.dart';
+import 'package:mom_clean/ui/auth/logInScreen.dart';
 import 'package:mom_clean/ui/packagesScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'custumWidget/customDrawer.dart';
 import 'custumWidget/custumAppBar.dart';
 
-class packAndMyPackageScreen extends StatelessWidget {
+class packAndMyPackageScreen extends StatefulWidget {
+  @override
+  _packAndMyPackageScreenState createState() => _packAndMyPackageScreenState();
+}
+
+class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
+      int notifNum=0;
+  int cartNum=0;
+
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-        endDrawer: drawar(index: 0),
+      endDrawer: drawar(index: 0,notifNum: notifNum,cartNum: cartNum,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -23,15 +48,16 @@ class packAndMyPackageScreen extends StatelessWidget {
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("أختر من الباقات",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "أختر من الباقات",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
       body: Builder(builder: (cont) {
         return Column(
           children: <Widget>[
-          
             Stack(children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -81,6 +107,7 @@ class packAndMyPackageScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: InkWell(
+                        
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (_) {
@@ -92,11 +119,21 @@ class packAndMyPackageScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (_) {
-                              return MypackageScreen();
-                            }));
+                          onTap: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            var token = await prefs.getString('token');
+                            if (token == null || token == "") {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return LoginScreen();
+                              }));
+                            } else {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return MypackageScreen();
+                              }));
+                            }
                           },
                           child: Container()),
                     ),

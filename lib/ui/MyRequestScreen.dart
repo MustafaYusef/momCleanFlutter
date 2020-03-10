@@ -6,6 +6,7 @@ import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/auth/profile.dart';
 import 'package:mom_clean/ui/packageDetails.dart';
 import 'package:mom_clean/ui/packagesScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'custumWidget/customDrawer.dart';
 import 'custumWidget/custumAppBar.dart';
@@ -19,11 +20,28 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
      Color cancelRed = Color(0xffC50F0F);
     Color green = Color(0xff169E23);
     Color yello = Color(0xffFFA200);
+
+     int notifNum=0;
+  int cartNum=0;
+
+@override
+   initState()  {
+    super.initState();
+     getNum();
+  }
+     getNum() async{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          notifNum =  prefs.getInt('notification');
+     cartNum =  prefs.getInt('cart');
+        });
+     
+ }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: drawar(index: 6),
+      endDrawer: drawar(index: 6,notifNum:notifNum ,cartNum: cartNum,),
     
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),

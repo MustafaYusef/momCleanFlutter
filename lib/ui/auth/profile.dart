@@ -331,6 +331,10 @@ class buildProfileBody extends StatelessWidget {
           onTap: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
    await prefs.setString('token',"");
+   await prefs.setInt('notification',0);
+   await prefs.setInt('cart',0);
+   await prefs.setString('name',"");
+   await prefs.setString('image',"");
             Navigator.push(context, MaterialPageRoute(builder: (_) {
               return LoginScreen();
             }));

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,10 @@ import '../ordersScreen.dart';
 
 class drawar extends StatefulWidget {
   int index;
-  drawar({Key key, @required this.index}) : super(key: key);
+  int notifNum=0;
+   int cartNum=0;
+  drawar({Key key, @required this.index, this.notifNum
+  , this.cartNum}) : super(key: key);
 
   @override
   _drawarState createState() => _drawarState();
@@ -94,26 +98,32 @@ name = await prefs.getString('name');
               ),
             ),
             Directionality(
-              textDirection: TextDirection.rtl,
-              child: ListTile(
-                onTap: () {
-                  Scaffold.of(cont).openDrawer();
-                  if (widget.index == 1) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) {
-                      return MyNotificationScreen();
-                    }));
-                  } else {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return MyNotificationScreen();
-                    }));
-                  }
-                },
-                selected: widget.index == 1 ? true : false,
-                title: Text("الأشعارات", style: TextStyle(fontSize: 16)),
-                leading: Icon(Icons.notifications),
-              ),
+                textDirection: TextDirection.rtl,
+                child: ListTile(
+                  onTap: () {
+                    Scaffold.of(cont).openDrawer();
+                    if (widget.index == 1) {
+                      Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) {
+                        return MyNotificationScreen();
+                      }));
+                    } else {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return MyNotificationScreen();
+                      }));
+                    }
+                  },
+                  selected: widget.index == 1 ? true : false,
+                  title: Text("الأشعارات", style: TextStyle(fontSize: 16)),
+                  leading: Badge(
+                      badgeContent: Text(
+             widget. notifNum==0||widget. notifNum==null?"": widget. notifNum.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 10),
             ),
+             badgeColor: Colors.deepOrange,
+                    child: Icon(Icons.notifications)),
+                ),
+              ),
             Directionality(
               textDirection: TextDirection.rtl,
               child: ListTile(
@@ -156,7 +166,7 @@ name = await prefs.getString('name');
                   "الأقسام",
                   style: TextStyle(fontSize: 16),
                 ),
-                leading: Icon(Icons.search),
+                leading: Icon(Icons.category),
               ),
             ),
             Directionality(
@@ -220,9 +230,9 @@ name = await prefs.getString('name');
                     }
                   },
                   selected: widget.index == 6 ? true : false,
-                  title: Text("طلبات الأشتراك", style: TextStyle(fontSize: 16)),
+                  title: Text("طلبات الأشتراك بالباقات", style: TextStyle(fontSize: 16)),
                   leading: Icon(
-                    Icons.card_travel,
+                    Icons.playlist_add_check
                   ),
                 )),
             Directionality(
@@ -255,7 +265,13 @@ name = await prefs.getString('name');
                 },
                 selected: widget.index == 7 ? true : false,
                 title: Text("سلة المشتريات", style: TextStyle(fontSize: 16)),
-                leading: Icon(Icons.settings),
+                leading: Badge(
+                   badgeContent: Text(
+             widget. cartNum==0||widget. cartNum==null?"": widget. cartNum.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+             badgeColor: Colors.deepOrange,
+                  child: Icon(Icons.shopping_cart)),
               ),
             ),
             Directionality(

@@ -8,6 +8,8 @@ import 'package:mom_clean/ui/MypackageDetails.dart';
 import 'package:mom_clean/ui/auth/profile.dart';
 import 'package:mom_clean/ui/ordersScreen.dart';
 import 'package:mom_clean/ui/packageDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 import 'custumWidget/customDrawer.dart';
 import 'custumWidget/custumAppBar.dart';
@@ -18,10 +20,31 @@ class MypackageScreen extends StatefulWidget {
 }
 
 class _MypackageScreenState extends State<MypackageScreen> {
+  int notifNum = 0;
+  int cartNum = 0;
+
+  @override
+  initState() {
+    super.initState();
+    getNum();
+  }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: drawar(index: 4),
+      endDrawer: drawar(
+        index: 4,
+        notifNum: notifNum,
+        cartNum: cartNum,
+      ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -123,7 +146,11 @@ class _MypackageScreenState extends State<MypackageScreen> {
                                                 int index) {
                                               return InkWell(
                                                 onTap: () {
-                                                  Navigator.push(context,
+                                                  if(state
+                                                .myPackage.data.packages[index].sameArea&&
+                                                state
+                                                .myPackage.data.packages[index].isActive){
+Navigator.push(context,
                                                       MaterialPageRoute(
                                                           builder: (_) {
                                                     return MypackageDetails(
@@ -145,6 +172,12 @@ class _MypackageScreenState extends State<MypackageScreen> {
                                                             .packageDetails
                                                             .descriptionAr);
                                                   }));
+                                                  }else{
+                                                Toast.show("هذه الباقة منتهية الصلاحية او غير فعالة", context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.BOTTOM);
+                                                  }
+                                                  
                                                 },
                                                 child: packageCard(state
                                                     .myPackage
@@ -203,7 +236,7 @@ class _MypackageScreenState extends State<MypackageScreen> {
                       Container(
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                    color: getColor(pack.isActive, pack.sameArea),
+                            color: getColor(pack.isActive, pack.sameArea),
                             borderRadius: BorderRadius.circular(10)),
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -317,11 +350,11 @@ class _MypackageScreenState extends State<MypackageScreen> {
     }
   }
 
- Color getColor(bool isActive, bool sameArea) {
-   Color cancelRed = Color(0xffC50F0F);
+  Color getColor(bool isActive, bool sameArea) {
+    Color cancelRed = Color(0xffC50F0F);
     Color green = Color(0xff169E23);
     Color yello = Color(0xffFFA200);
-        if (isActive && sameArea) {
+    if (isActive && sameArea) {
       return green;
     } else if (isActive && !sameArea) {
       return yello;
