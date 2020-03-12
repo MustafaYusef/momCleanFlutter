@@ -57,7 +57,7 @@ class _ImageInput extends State<ImageInput> {
                         await SharedPreferences.getInstance();
           var token= await prefs.getString('token');
     imageUploadRequest.headers.addAll({
-      "Authorization":token
+      "Authorization":token,"Content-Type":"application/x-www-form-urlencoded"
     });
     try {
       final streamedResponse = await imageUploadRequest.send();

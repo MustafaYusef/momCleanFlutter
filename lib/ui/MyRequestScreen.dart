@@ -41,7 +41,7 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: drawar(index: 6,notifNum:notifNum ,cartNum: cartNum,),
+      endDrawer: drawar(index: 6,),
     
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),

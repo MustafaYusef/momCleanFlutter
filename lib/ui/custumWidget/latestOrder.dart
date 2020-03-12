@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mom_clean/models/orders.dart';
+import 'package:mom_clean/ui/auth/logInScreen.dart';
 import 'package:mom_clean/ui/custumWidget/time.dart';
 import 'package:mom_clean/ui/orderDetailsScreen.dart';
 
@@ -14,6 +15,9 @@ class latestOrder extends StatefulWidget {
 }
 
 class _latestOrderState extends State<latestOrder> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,9 +30,40 @@ class _latestOrderState extends State<latestOrder> {
                   ? Container(
                       height: 150,
                       child: Center(
-                        child: Text("لا توجد طلبات",
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.grey[600])),
+                        child: Column(
+                          children: <Widget>[
+                            Text("لا توجد طلبات",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey[600])),
+                            // Container(
+                            
+                            //   margin: EdgeInsets.only(
+                            //       top: 10, bottom: 10, left: 20, right: 20),
+                            //   width: MediaQuery.of(context).size.width,
+                            //   height: 50,
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(20),
+                            //     child: RaisedButton(
+                            //       color: Theme.of(context).primaryColor,
+                            //       elevation: 5,
+                            //       child: Directionality(
+                            //         textDirection: TextDirection.rtl,
+                            //         child: Text("تسجيل الدخول",
+                            //             style: TextStyle(
+                            //                 color: Colors.white, fontSize: 20)),
+                            //       ),
+                            //       onPressed: () async {
+                            //         //go to verifecation page
+                            //         Navigator.push(context,
+                            //             MaterialPageRoute(builder: (_) {
+                            //           return LoginScreen();
+                            //         }));
+                            //       },
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     )
                   : ListView.builder(
@@ -167,8 +202,8 @@ class orderListCard extends StatelessWidget {
     }
   }
 
- String getStatus(String status) {
- if (status == "watting") {
+  String getStatus(String status) {
+    if (status == "watting") {
       return "أنتظار";
     } else if (status == "delivered") {
       return "تم التسليم";

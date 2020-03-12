@@ -42,8 +42,7 @@ class _MypackageScreenState extends State<MypackageScreen> {
     return Scaffold(
       endDrawer: drawar(
         index: 4,
-        notifNum: notifNum,
-        cartNum: cartNum,
+    
       ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),

@@ -19,30 +19,39 @@ import '../ordersScreen.dart';
 
 class drawar extends StatefulWidget {
   int index;
-  int notifNum=0;
-   int cartNum=0;
-  drawar({Key key, @required this.index, this.notifNum
-  , this.cartNum}) : super(key: key);
+  // int notifNum=0;
+  //  int cartNum=0;
+  drawar({Key key, @required this.index}) : super(key: key);
 
   @override
   _drawarState createState() => _drawarState();
 }
 
 class _drawarState extends State<drawar> {
-  String name="";
+  String name = "";
 
-   String image="";
+  String image = "";
+
+  int notifNum = 0;
+  int cartNum = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   getImage();
+    getImage();
   }
+
   getImage() async {
- SharedPreferences prefs = await SharedPreferences.getInstance();
-     image = await prefs.getString('image');
-name = await prefs.getString('name');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      image = prefs.getString('image');
+      name = prefs.getString('name');
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (cont) {
@@ -58,17 +67,18 @@ name = await prefs.getString('name');
                   children: <Widget>[
                     CircleAvatar(
                       radius: 40,
-                      child: FadeInImage(
-                          placeholder:
-                              AssetImage("assets/images/placeholder.png"),
-                          image: NetworkImage(baseUrlImage+image)),
+                      backgroundImage: NetworkImage(
+                          image == null ? " " : baseUrlImage + image),
                     ),
-                    Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Text(
-                          name,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        )),
+                    Container(
+                      margin: EdgeInsets.only(right: 5,top:5),
+                      child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Text(
+                            name == null ? "أسم المستخدم" :name,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          )),
+                    ),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -98,32 +108,50 @@ name = await prefs.getString('name');
               ),
             ),
             Directionality(
-                textDirection: TextDirection.rtl,
-                child: ListTile(
-                  onTap: () {
-                    Scaffold.of(cont).openDrawer();
-                    if (widget.index == 1) {
+              textDirection: TextDirection.rtl,
+              child: ListTile(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  String token = await prefs.getString("token");
+                  Scaffold.of(cont).openDrawer();
+                  if (widget.index == 1) {
+                    if (token == null || token == "") {
                       Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) {
+                          MaterialPageRoute(builder: (_) {
+                        return LoginScreen();
+                      }));
+                    } else {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) {
                         return MyNotificationScreen();
+                      }));
+                    }
+                  } else {
+                    if (token == null || token == "") {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return LoginScreen();
                       }));
                     } else {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
                         return MyNotificationScreen();
                       }));
                     }
-                  },
-                  selected: widget.index == 1 ? true : false,
-                  title: Text("الأشعارات", style: TextStyle(fontSize: 16)),
-                  leading: Badge(
-                      badgeContent: Text(
-             widget. notifNum==0||widget. notifNum==null?"": widget. notifNum.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 10),
-            ),
-             badgeColor: Colors.deepOrange,
+                  }
+                },
+                selected: widget.index == 1 ? true : false,
+                title: Text("الأشعارات", style: TextStyle(fontSize: 16)),
+                leading: Badge(
+                    badgeContent: Text(
+                      notifNum == 0 || notifNum == null
+                          ? ""
+                          : notifNum.toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                    badgeColor: Colors.deepOrange,
                     child: Icon(Icons.notifications)),
-                ),
               ),
+            ),
             Directionality(
               textDirection: TextDirection.rtl,
               child: ListTile(
@@ -230,10 +258,9 @@ name = await prefs.getString('name');
                     }
                   },
                   selected: widget.index == 6 ? true : false,
-                  title: Text("طلبات الأشتراك بالباقات", style: TextStyle(fontSize: 16)),
-                  leading: Icon(
-                    Icons.playlist_add_check
-                  ),
+                  title: Text("طلبات الأشتراك بالباقات",
+                      style: TextStyle(fontSize: 16)),
+                  leading: Icon(Icons.playlist_add_check),
                 )),
             Directionality(
               textDirection: TextDirection.rtl,
@@ -266,12 +293,12 @@ name = await prefs.getString('name');
                 selected: widget.index == 7 ? true : false,
                 title: Text("سلة المشتريات", style: TextStyle(fontSize: 16)),
                 leading: Badge(
-                   badgeContent: Text(
-             widget. cartNum==0||widget. cartNum==null?"": widget. cartNum.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 10),
-            ),
-             badgeColor: Colors.deepOrange,
-                  child: Icon(Icons.shopping_cart)),
+                    badgeContent: Text(
+                      cartNum == 0 || cartNum == null ? "" : cartNum.toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                    badgeColor: Colors.deepOrange,
+                    child: Icon(Icons.shopping_cart)),
               ),
             ),
             Directionality(
@@ -312,5 +339,4 @@ name = await prefs.getString('name');
       );
     });
   }
-
 }

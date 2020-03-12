@@ -44,7 +44,7 @@ class _categotyState extends State<categoty> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer: drawar(index: 3,notifNum:notifNum ,cartNum: cartNum,),
+        endDrawer: drawar(index: 3),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(45.0),
           child: AppBar(

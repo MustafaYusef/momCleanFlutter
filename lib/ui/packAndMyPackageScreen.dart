@@ -20,23 +20,16 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
 @override
    initState()  {
     super.initState();
-     getNum();
+   //  getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
   
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: drawar(index: 0,notifNum: notifNum,cartNum: cartNum,),
+      endDrawer: drawar(index: 0,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -61,7 +54,7 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
             Stack(children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 73,
+                height: MediaQuery.of(context).size.height - 69,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -84,7 +77,7 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 73,
+                height: MediaQuery.of(context).size.height - 69,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
@@ -100,7 +93,7 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 73,
+                height: MediaQuery.of(context).size.height - 69,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[

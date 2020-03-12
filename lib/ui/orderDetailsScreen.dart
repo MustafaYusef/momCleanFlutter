@@ -41,7 +41,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: drawar(index: 5,notifNum: notifNum,cartNum:cartNum ,),
+      endDrawer: drawar(index: 5,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

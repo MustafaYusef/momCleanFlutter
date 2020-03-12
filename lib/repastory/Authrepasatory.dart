@@ -107,7 +107,7 @@ Future<signUpRes> reSetPassword(String password,String reset_Code,String phone) 
 Future<signUpRes> UpdateProfile(String token,String name,int city) async {
     final response = await put(baseUrl+"auth/profile",
     headers: {"Authorization":token},
-    body:{"name":name,"cityId":city.toString()});
+    body:{"name":name,"city":city.toString()});
     if (response.statusCode == 200||response.statusCode == 201) {
       return SignUpResFromJson(response.body);
     } else {

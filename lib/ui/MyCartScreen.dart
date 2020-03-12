@@ -39,8 +39,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
     return Scaffold(
       endDrawer: drawar(
         index: 7,
-        notifNum: notifNum,
-        cartNum: cartNum,
+        
       ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),

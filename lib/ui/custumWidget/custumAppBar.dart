@@ -8,13 +8,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../MyCartScreen.dart';
 
-class myAppBar extends StatelessWidget {
+class myAppBar extends StatefulWidget {
   final  cont;
-   final int notifNum;
-    final int cart;
+  //  final int notifNum;
+  //   final int cart;
   const myAppBar({
-    Key key,@required this.cont, this. cart, this. notifNum
+    Key key,@required this.cont
   }) : super(key: key);
+
+  @override
+  _myAppBarState createState() => _myAppBarState();
+}
+
+class _myAppBarState extends State<myAppBar> {
+
+int notifNum=0;
+  int cart=0;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   getImage();
+  }
+  getImage() async {
+ SharedPreferences prefs = await SharedPreferences.getInstance();
+ setState(()  {
+   
+    notifNum =  prefs.getInt('notification');
+     cart =  prefs.getInt('cart');
+ });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +79,7 @@ class myAppBar extends StatelessWidget {
           ),
           InkWell(
              onTap: () {
-                  Scaffold.of(cont).openEndDrawer();
+                  Scaffold.of(widget.cont).openEndDrawer();
                 },
                       child: Badge(
               badgeContent: Text(

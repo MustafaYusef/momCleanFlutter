@@ -88,7 +88,7 @@ getNum();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        endDrawer: drawar(index: 0,notifNum:notifNum,cartNum:cartNum ,),
+        endDrawer: drawar(index: 0 ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

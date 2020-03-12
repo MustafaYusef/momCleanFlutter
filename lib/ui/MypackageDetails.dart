@@ -51,7 +51,7 @@ class _MypackageDetailsState extends State<MypackageDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         endDrawer: drawar(index: 4,notifNum: notifNum,cartNum: cartNum,),
+         endDrawer: drawar(index: 4,),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(

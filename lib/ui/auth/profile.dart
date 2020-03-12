@@ -9,6 +9,7 @@ import 'package:mom_clean/ui/auth/logInScreen.dart';
 import 'package:mom_clean/ui/auth/updatePhoto.dart';
 import 'package:mom_clean/ui/auth/updateProfile.dart';
 import 'package:mom_clean/ui/custumWidget/customDrawer.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
@@ -146,15 +147,24 @@ class _BuildContentStateState extends State<BuildContentState> {
 
     _postBloc = BlocProvider.of<ProfileBloc>(widget.context);
   }
-
+RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
     if (widget.state is ProfileLoading) {
       return Center(child: CircularProgressIndicator());
     }
     if (widget.state is ProfileLoaded) {
-      return SingleChildScrollView(
-          child: buildProfileBody(widget.state.profile));
+      return SmartRefresher(
+              child: SingleChildScrollView(
+            child: buildProfileBody(widget.state.profile)),
+               enablePullDown: true,
+                        header: WaterDropMaterialHeader(),
+                        controller: _refreshController,
+             onRefresh: (){
+               BlocProvider.of<ProfileBloc>(widget.context).add(FetchProfile());
+             },
+      );
     }
   }
 }

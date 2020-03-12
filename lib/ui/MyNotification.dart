@@ -48,7 +48,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer: drawar(index: 1,notifNum: notifNum,cartNum: cartNum,),
+        endDrawer: drawar(index: 1),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -76,47 +76,44 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                 child: Center(child: circularProgress()));
           }
           if (state is NotificationLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Text(
-                        "الأشعارات",
-                        style: TextStyle(color: Colors.grey[900], fontSize: 24),
-                      )),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: 500,
-                    child: ListView.builder(
-                      itemBuilder: (BuildContext context, int index) {
-                        return buildCard(
-                            state.notification.data.myNotifications[index],context);
-                      },
-                      itemCount: state.notification.data.myNotifications.length,
+            return Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text(
+              "الأشعارات",
+              style: TextStyle(color: Colors.grey[900], fontSize: 24),
+            )),
                     ),
-                  ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      child: Expanded(
+                                child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return buildCard(
+                  state.notification.data.myNotifications[index],context);
+            },
+            itemCount: state.notification.data.myNotifications.length,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            );
+              );
           }
           if (state is NotificationError) {
-         return networkError(state.string);
+         return networkError("يوجد خطأ ما");
           }
           if (state is NotificationNetworkError) {
             return networkError("لا يوجد اتصال بالشبكة");
           }
-          if (state is NotificationDeleted) {
-            Toast.show("تم حذف الأشعار بنجاح", context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-            BlocProvider.of<NotificationBloc>(context).add(FetchNotification());
-          }
+  
         })));
   }
 
@@ -280,11 +277,15 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                       child: Text("تأكيد",
                           style: TextStyle(color: Colors.white, fontSize: 20)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                        //print("clicked");
-                       Navigator.pop(context1);
-                      BlocProvider.of<NotificationBloc>(context1)
+                        Navigator.pop(context1);
+                        await BlocProvider.of<NotificationBloc>(context1)
                           .add(CancelNotification(id));
+                      
+                    Toast.show("تم حذف الأشعار بنجاح", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            BlocProvider.of<NotificationBloc>(context).add(FetchNotification());
                           
                     },
                   ),

@@ -36,7 +36,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-     endDrawer: drawar(index: 5,notifNum: notifNum,cartNum: cartNum,),
+     endDrawer: drawar(index: 5),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
