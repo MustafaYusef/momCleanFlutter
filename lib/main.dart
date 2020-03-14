@@ -116,8 +116,9 @@ class _MainScreenState extends State<MainScreen> {
       print("plyer id  " + playerId.toString());
       return playerId;
     }
- RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+
+    RefreshController _refreshController =
+        RefreshController(initialRefresh: false);
     var playerId = getuserId();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor:
@@ -131,12 +132,11 @@ class _MainScreenState extends State<MainScreen> {
         return SafeArea(
           child: Column(
             children: <Widget>[
-              myAppBar(cont: cont),
-              Expanded(
-                child: BlocProvider(
-                  create: (context) {
-                    return HomeBloc(Repo: MainRepastory())..add(FetchHome());
-                  },
+              BlocProvider(
+                create: (context) {
+                  return HomeBloc(Repo: MainRepastory())..add(FetchHome());
+                },
+                child: Expanded(
                   child: BlocBuilder<HomeBloc, HomeState>(
                       builder: (context, state) {
                     if (state is HomeLoading) {
@@ -146,284 +146,322 @@ class _MainScreenState extends State<MainScreen> {
                       );
                     }
                     if (state is HomeLoaded) {
-                      return SmartRefresher(
-                        enablePullDown: true,
-                        header: WaterDropMaterialHeader(),
-                        controller: _refreshController,
-        onRefresh: (){
- BlocProvider.of<HomeBloc>(context)
-                          .add(FetchHome());
-                        // _refreshController.refreshCompleted();
-        },
-        onLoading: ()  {
-           
-        },
-                                              child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(right: 10, bottom: 10),
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
+                      return Column(
+                        children: <Widget>[
+                          myAppBar(cont: cont),
+                          Expanded(
+                            child: SmartRefresher(
+                              enablePullDown: true,
+                              header: WaterDropMaterialHeader(),
+                              controller: _refreshController,
+                              onRefresh: () {
+                                BlocProvider.of<HomeBloc>(context)
+                                    .add(FetchHome());
+
+                                // _refreshController.refreshCompleted();
+                              },
+                              onLoading: () {},
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Container(
+                                  child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: <Widget>[
-                                        Directionality(
-                                          child: Text(
-                                            "الباقات",
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                color: Colors.grey[800]),
-                                          ),
-                                          textDirection: TextDirection.rtl,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: EdgeInsets.only(left: 10,bottom: 5),
-                                              child: Directionality(
-                                                child: InkWell(
-                                                  onTap: (){
-                                                        Navigator.push(context,
-                                                    MaterialPageRoute(builder: (_) {
-                                                  return packageScreen();
-                                                }));
-                                                  },
-                                                  child: Text("عرض الكل",
-                                                      style: TextStyle(
-                                                          color: Colors.grey[800],
-                                                          fontSize: 16,fontWeight: FontWeight.bold)),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 10),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              Directionality(
+                                                child: Text(
+                                                  "الباقات",
+                                                  style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.grey[800]),
                                                 ),
                                                 textDirection: TextDirection.rtl,
                                               ),
-                                            ),
-                                            Directionality(
-                                              child: Text(
-                                                  "تكدر تختار الباقة اللي تعجبك",
-                                                  style: TextStyle(
-                                                      color: Colors.grey[800])),
-                                              textDirection: TextDirection.rtl,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  sliderSection(
-                                      packages: state.package.data.banner,
-                                      current: _current),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Directionality(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "أطلب هسه",
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              color: Colors.grey[700],
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      textDirection: TextDirection.rtl,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (_) {
-                                                return packAndMyPackageScreen();
-                                              }));
-                                            },
-                                            child: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Directionality(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(5.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Container(
-                                                            width: 50,
-                                                            height: 50,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 5),
-                                                            decoration: BoxDecoration(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 10, bottom: 5),
+                                                    child: Directionality(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(
+                                                                  builder: (_) {
+                                                            return packageScreen();
+                                                          }));
+                                                        },
+                                                        child: Text("عرض الكل",
+                                                            style: TextStyle(
                                                                 color: Colors
-                                                                    .greenAccent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            25),
-                                                                gradient:
-                                                                    LinearGradient(
-                                                                        begin: Alignment
-                                                                            .bottomCenter,
-                                                                        end: Alignment.topCenter,
-                                                                        stops: [
-                                                                      0.15,
-                                                                      1.0
-                                                                    ],
-                                                                        colors: [
-                                                                      Color(
-                                                                          0xff2A815B),
-                                                                      Color(
-                                                                          0xff35D289)
-                                                                    ])),
-                                                            child: Icon(
-                                                              Icons.local_offer,
-                                                              color: Colors.white,
-                                                            )),
-                                                        Text(
-                                                          "خليها \nعلى باقتك",
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            color:
-                                                                Colors.grey[700],
-                                                          ),
-                                                        ),
-                                                      ],
+                                                                    .grey[800],
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                      ),
+                                                      textDirection:
+                                                          TextDirection.rtl,
                                                     ),
                                                   ),
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                )),
+                                                  Directionality(
+                                                    child: Text(
+                                                        "تكدر تختار الباقة اللي تعجبك",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .grey[800])),
+                                                    textDirection:
+                                                        TextDirection.rtl,
+                                                  ),
+                                                ],
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (_) {
-                                                return categoty();
-                                              }));
-                                            },
-                                            child: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Directionality(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(5.0),
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        Container(
-                                                            width: 50,
-                                                            height: 50,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    color: Colors
-                                                                        .greenAccent,
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                25),
-                                                                    gradient: LinearGradient(
-                                                                        begin: Alignment
-                                                                            .bottomCenter,
-                                                                        end: Alignment
-                                                                            .topCenter,
-                                                                        stops: [
-                                                                          0.15,
-                                                                          1.0
-                                                                        ],
-                                                                        colors: [
-                                                                          Color(
-                                                                              0xff063051),
-                                                                          Color(
-                                                                              0xff35D2CD),
-                                                                        ])),
-                                                            child: Icon(
-                                                              Icons.local_atm,
-                                                              color: Colors.white,
-                                                            )),
-                                                        Text(
-                                                          "نحاسبك \nعلى القطعة",
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            color:
-                                                                Colors.grey[700],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                )),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(0.0),
-                                    child:state.orders==null?
-                                    Container(): Container(
-                                      margin: EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Directionality(
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(builder: (_) {
-                                                  return OrderScreen();
-                                                }));
-                                              },
-                                              child: Text("عرض الكل",
-                                                  style: TextStyle(
-                                                      color: Colors.deepOrange,
-                                                      fontWeight: FontWeight.bold)),
+                                        sliderSection(
+                                            packages: state.package.data.banner,
+                                            current: _current),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Directionality(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "أطلب هسه",
+                                                style: TextStyle(
+                                                    fontSize: 22,
+                                                    color: Colors.grey[700],
+                                                    fontWeight: FontWeight.bold),
+                                              ),
                                             ),
                                             textDirection: TextDirection.rtl,
                                           ),
-                                          Directionality(
-                                            child: Text("أخر الطلبات",
-                                                style: TextStyle(
-                                                    color: Colors.grey[600],
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.bold)),
-                                            textDirection: TextDirection.rtl,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  latestOrder(state.orders)
-                                ]),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.all(5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 1,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) {
+                                                      return packAndMyPackageScreen();
+                                                    }));
+                                                  },
+                                                  child: Card(
+                                                      elevation: 5,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      child: Directionality(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              5),
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors
+                                                                          .greenAccent,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              25),
+                                                                      gradient: LinearGradient(
+                                                                          begin: Alignment
+                                                                              .bottomCenter,
+                                                                          end: Alignment.topCenter,
+                                                                          stops: [
+                                                                            0.15,
+                                                                            1.0
+                                                                          ],
+                                                                          colors: [
+                                                                            Color(
+                                                                                0xff2A815B),
+                                                                            Color(
+                                                                                0xff35D289)
+                                                                          ])),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .local_offer,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                              Text(
+                                                                "خليها \nعلى باقتك",
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .grey[700],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                      )),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) {
+                                                      return categoty();
+                                                    }));
+                                                  },
+                                                  child: Card(
+                                                      elevation: 5,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      child: Directionality(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              5),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          color: Colors
+                                                                              .greenAccent,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                                  25),
+                                                                          gradient: LinearGradient(
+                                                                              begin:
+                                                                                  Alignment.bottomCenter,
+                                                                              end: Alignment.topCenter,
+                                                                              stops: [
+                                                                                0.15,
+                                                                                1.0
+                                                                              ],
+                                                                              colors: [
+                                                                                Color(0xff063051),
+                                                                                Color(0xff35D2CD),
+                                                                              ])),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .local_atm,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                              Text(
+                                                                "نحاسبك \nعلى القطعة",
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .grey[700],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                      )),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: state.orders == null
+                                              ? Container()
+                                              : Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Directionality(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (_) {
+                                                              return OrderScreen();
+                                                            }));
+                                                          },
+                                                          child: Text("عرض الكل",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .deepOrange,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                      ),
+                                                      Directionality(
+                                                        child: Text("أخر الطلبات",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey[600],
+                                                                fontSize: 22,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                        ),
+                                        latestOrder(state.orders)
+                                      ]),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       );
                     }
                     if (state is HomeNetworkError) {

@@ -43,6 +43,7 @@ dependencies:
   location: ^2.5.0
   google_maps_flutter: ^0.5.24+1
   date_format: ^1.0.8
+  rflutter_alert: ^1.0.3
  
 dev_dependencies:
   flutter_test:

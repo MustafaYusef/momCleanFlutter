@@ -5,6 +5,7 @@ import 'package:mom_clean/blocs/CartBloc.dart';
 import 'package:mom_clean/models/cartRes.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/mapScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -83,7 +84,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                             key: Key(index.toString()),
                           
                             onDismissed: (direction)  {
-                              showAlertDialog(context,state.cart.data.myCart[index].id);
+                              showAlert(context,state.cart.data.myCart[index].id);
                             },
                           );
                         },
@@ -113,7 +114,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       ),
                       Text("السعر الكلي",
                           style:
-                              TextStyle(color: Colors.grey[600], fontSize: 26)),
+                              TextStyle(color: Colors.grey[700], fontSize: 20)),
                     ],
                   ),
                   SizedBox(
@@ -209,20 +210,96 @@ class _MyCartScreenState extends State<MyCartScreen> {
     );
   }
 
-  showAlertDialog(BuildContext context,int id) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Directionality(textDirection: TextDirection.rtl,
-        child: Text("خروج")),
-      onPressed: ()async {
-       await BlocProvider.of<CartBloc>(context).add(FetchCart());
-        Navigator.of(context).pop();
-      },
+  // showAlertDialog(BuildContext context,int id) {
+  //   // set up the buttons
+  //   Widget cancelButton = FlatButton(
+  //     child: Directionality(textDirection: TextDirection.rtl,
+  //       child: Text("خروج")),
+  //     onPressed: ()async {
+  //      await BlocProvider.of<CartBloc>(context).add(FetchCart());
+  //       Navigator.of(context).pop();
+  //     },
+  //   );
+  //   Widget continueButton = FlatButton(
+  //     child: Directionality(textDirection: TextDirection.rtl,
+  //       child: Text("حذف")),
+  //     onPressed: () async {
+  //       await BlocProvider.of<CartBloc>(context)
+  //           .add(DeleteItemCart(id));
+  //       Toast.show("تم حذف العنصر من السلة", context,
+  //           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  //       BlocProvider.of<CartBloc>(context).add(FetchCart());
+      
+  //     Navigator.of(context).pop();
+  //     },
+  //   );
+
+  //   // set up the AlertDialog
+  //   AlertDialog alert = AlertDialog(
+  //     title: Directionality(textDirection: TextDirection.rtl,
+  //       child: Text("هل تريد حذف هذا العنصر من السلة؟")),
+  //     // content: Text(
+  //     //     "Would you like to continue learning how to use Flutter alerts?"),
+  //     actions: [
+  //       cancelButton,
+  //       continueButton,
+  //     ],
+  //   );
+
+  //   // show the dialog
+  //   showDialog(
+  //     barrierDismissible: false,
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
+ showAlert(BuildContext context,int id) {
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 300),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color:Colors.red,
+      ),
     );
-    Widget continueButton = FlatButton(
-      child: Directionality(textDirection: TextDirection.rtl,
-        child: Text("حذف")),
-      onPressed: () async {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "هل تريد حذف هذا العنصر من السلة؟",
+      desc: "",
+      style: alertStyle,
+      buttons: [
+          DialogButton(
+          child: Text(
+            "خروج",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
+              await BlocProvider.of<CartBloc>(context).add(FetchCart());
+        Navigator.of(context).pop();
+          },
+            color: Theme.of(context).primaryColor,
+          // gradient: LinearGradient(colors: [
+          //   Color.fromRGBO(116, 116, 191, 1.0),
+          //   Color.fromRGBO(52, 138, 199, 1.0)
+          // ]),
+        ),
+        DialogButton(
+          child: Text(
+            "حذف",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
         await BlocProvider.of<CartBloc>(context)
             .add(DeleteItemCart(id));
         Toast.show("تم حذف العنصر من السلة", context,
@@ -231,30 +308,12 @@ class _MyCartScreenState extends State<MyCartScreen> {
       
       Navigator.of(context).pop();
       },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Directionality(textDirection: TextDirection.rtl,
-        child: Text("هل تريد حذف هذا العنصر من السلة؟")),
-      // content: Text(
-      //     "Would you like to continue learning how to use Flutter alerts?"),
-      actions: [
-        cancelButton,
-        continueButton,
+          color:  Colors.red,
+        ),
+      
       ],
-    );
-
-    // show the dialog
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+    ).show();
   }
-
   Widget buildCardOnce(MyCart item) {
     return Container(
       margin: EdgeInsets.all(10),

@@ -109,7 +109,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
      
           yield NotificationLoading();
           final notification = await Repo.deleteNotification(token, event.id);
-          yield NotificationDeleted();
+          //yield NotificationDeleted();
           return;
         
       } on SocketException catch (_) {

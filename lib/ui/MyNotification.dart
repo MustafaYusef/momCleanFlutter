@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mom_clean/blocs/notificationBloc.dart';
 import 'package:mom_clean/models/notificationRes.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -28,43 +29,45 @@ class MyNotificationScreen extends StatefulWidget {
 }
 
 class _MyNotificationScreenState extends State<MyNotificationScreen> {
- int notifNum=0;
-  int cartNum=0;
+  int notifNum = 0;
+  int cartNum = 0;
 
-@override
-   initState()  {
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         endDrawer: drawar(index: 1),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
-        child: AppBar(
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor, //change your color here
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(45.0),
+          child: AppBar(
+            iconTheme: IconThemeData(
+              color: Theme.of(context).primaryColor, //change your color here
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            title: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text(
+                "الأشعارات",
+                style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
           ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Text("الأشعارات",style: TextStyle(fontSize: 20,color: Colors.black),),
-          ),
-          
         ),
-      ),
         body: BlocProvider(create: (context) {
           return NotificationBloc(Repo: MainRepastory())
             ..add(FetchNotification());
@@ -76,48 +79,60 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                 child: Center(child: circularProgress()));
           }
           if (state is NotificationLoaded) {
+            if(state.notification.data.myNotifications.isEmpty){
+             return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(child:Text("لا يوجد اشعارات",style: TextStyle(fontSize: 18),))); 
+            }
             return Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Text(
-              "الأشعارات",
-              style: TextStyle(color: Colors.grey[900], fontSize: 24),
-            )),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      child: Expanded(
-                                child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return buildCard(
-                  state.notification.data.myNotifications[index],context);
-            },
-            itemCount: state.notification.data.myNotifications.length,
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Text(
+                          "الأشعارات",
+                          style:
+                              TextStyle(color: Colors.grey[900], fontSize: 24),
+                        )),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return buildCard(
+                              state.notification.data.myNotifications[index],
+                              context);
+                        },
+                        itemCount:
+                            state.notification.data.myNotifications.length,
                       ),
                     ),
-                  ],
-                ),
-              );
+                  ),
+                ],
+              ),
+            );
           }
           if (state is NotificationError) {
-         return networkError("يوجد خطأ ما");
+            return networkError("يوجد خطأ ما");
           }
           if (state is NotificationNetworkError) {
             return networkError("لا يوجد اتصال بالشبكة");
           }
-  
+//           if(state is NotificationDeleted){
+//  return Container(
+//                 height: MediaQuery.of(context).size.height,
+//                 child: Center(child: circularProgress()));
+//           }
         })));
   }
 
-  Widget buildCard(MyNotification myNotification,BuildContext context1) {
+  Widget buildCard(MyNotification myNotification, BuildContext context1) {
     return Container(
       margin: EdgeInsets.all(5),
       width: MediaQuery.of(context1).size.width,
@@ -168,9 +183,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              getDate(myNotification.createAt.split(" ")[0] +
-                                  "/" +
-                                  myNotification.createAt.split(" ")[1]),
+                              getDate(myNotification.createAt),
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[900],
@@ -211,12 +224,13 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                     onTap: () {
-                                      showDialog(
-                                          context: context1,
-                                          builder: (BuildContext context) {
-                                            return DeleteAlert(
-                                                context1, myNotification.id);
-                                          });
+                                      showAlert(context1,myNotification.id);
+                                      // showDialog(
+                                      //     context: context1,
+                                      //     builder: (BuildContext context) {
+                                      //       return DeleteAlert(
+                                      //           context1, myNotification.id);
+                                      //     });
                                     },
                                     child: Icon(
                                       Icons.delete_forever,
@@ -235,6 +249,68 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
             )),
       ),
     );
+  }
+
+  showAlert(BuildContext context1,int id) {
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: true,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 300),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color:Colors.red,
+      ),
+    );
+    Alert(
+      context: context,
+      type: AlertType.warning,
+      title: "هل تريد حذف هذا الأشعار",
+      desc: "",
+      style: alertStyle,
+      buttons: [
+          DialogButton(
+          child: Text(
+            "خروج",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+            color: Theme.of(context).primaryColor,
+          // gradient: LinearGradient(colors: [
+          //   Color.fromRGBO(116, 116, 191, 1.0),
+          //   Color.fromRGBO(52, 138, 199, 1.0)
+          // ]),
+        ),
+        DialogButton(
+          child: Text(
+            "حذف",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
+          
+            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+            //   return OrderScreen();
+            // }));
+              Navigator.pop(context1);
+                      await BlocProvider.of<NotificationBloc>(context1)
+                          .add(CancelNotification(id));
+
+                      Toast.show("تم حذف الأشعار بنجاح", context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      BlocProvider.of<NotificationBloc>(context1)
+                          .add(FetchNotification());
+          },
+          color:  Colors.red,
+        ),
+      
+      ],
+    ).show();
   }
 
   Widget DeleteAlert(BuildContext context1, int id) {
@@ -278,15 +354,15 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 20)),
                     ),
                     onPressed: () async {
-                       //print("clicked");
-                        Navigator.pop(context1);
-                        await BlocProvider.of<NotificationBloc>(context1)
+                      //print("clicked");
+                      Navigator.pop(context1);
+                      await BlocProvider.of<NotificationBloc>(context1)
                           .add(CancelNotification(id));
-                      
-                    Toast.show("تم حذف الأشعار بنجاح", context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-            BlocProvider.of<NotificationBloc>(context).add(FetchNotification());
-                          
+
+                      Toast.show("تم حذف الأشعار بنجاح", context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      BlocProvider.of<NotificationBloc>(context)
+                          .add(FetchNotification());
                     },
                   ),
                 ),

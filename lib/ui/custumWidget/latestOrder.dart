@@ -106,7 +106,7 @@ class orderListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 100,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Card(
@@ -145,10 +145,11 @@ class orderListCard extends StatelessWidget {
                       Text(
                         getDate(myorder.createAt),
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: getListColor(myorder.status)[0]),
                       ),
-                      Text("الحالة:${getStatus(myorder.status)}")
+                      Text("الحالة:${getStatus(myorder.status)}"),
+                      Text(myorder.type=="items"?"النوع: أعتيادي":"النوع: باقة")
                     ],
                   ),
                 ),

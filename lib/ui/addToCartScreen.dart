@@ -84,6 +84,236 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                 height: MediaQuery.of(context).size.height,
                 child: Center(child: circularProgress()));
           }
+          if(state is CartAddLoading){
+       
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  buildCardOnce(widget.item),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        width: 50,
+                        height: 50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: RaisedButton(
+                              color: Color(0xffCE4B4B),
+                              elevation: 5,
+                              child: Text("-",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 34,
+                                      fontFamily: "")),
+                              onPressed: () {
+                                setState(() {
+                                  if (dishWachNum != 0) {
+                                    dishWachNum--;
+                                    totalPrice =
+                                        (widget.item.dwPrice * dishWachNum) +
+                                            (widget.item.washPrice * wachNum);
+                                  }
+                                });
+                              }),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        width: 50,
+                        height: 50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: RaisedButton(
+                              color: Color(0xff063051),
+                              elevation: 5,
+                              child: Text("+",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontFamily: "")),
+                              onPressed: () {
+                                setState(() {
+                                  dishWachNum++;
+                                  totalPrice =
+                                      (widget.item.dwPrice * dishWachNum) +
+                                          (widget.item.washPrice * wachNum);
+                                });
+                              }),
+                        ),
+                      ),
+                      Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Text(
+                           widget.item.washPrice==0?"غسل": "غسل وكوي",
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.grey[800]),
+                          )),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        width: 70,
+                        height: 70,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: RaisedButton(
+                              color: Color(0xff7DADB2),
+                              elevation: 5,
+                              child: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text(dishWachNum.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24)),
+                              ),
+                              onPressed: () {}),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                                      child:widget.item.washPrice==0?
+                                      Container():
+                                       Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          width: 50,
+                          height: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: RaisedButton(
+                                color: Color(0xffCE4B4B),
+                                elevation: 5,
+                                child: Text("-",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 34,
+                                        fontFamily: "")),
+                                onPressed: () {
+                                  setState(() {
+                                    if (wachNum != 0) {
+                                      wachNum--;
+                                      totalPrice =
+                                          (widget.item.dwPrice * dishWachNum) +
+                                              (widget.item.washPrice * wachNum);
+                                    }
+                                  });
+                                }),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          width: 50,
+                          height: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: RaisedButton(
+                                color: Color(0xff063051),
+                                elevation: 5,
+                                child: Text("+",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontFamily: "")),
+                                onPressed: () {
+                                  setState(() {
+                                    wachNum++;
+                                    totalPrice =
+                                        (widget.item.dwPrice * dishWachNum) +
+                                            (widget.item.washPrice * wachNum);
+                                  });
+                                }),
+                          ),
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text(
+                              "بس كوي",
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.grey[800]),
+                            )),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          width: 70,
+                          height: 70,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: RaisedButton(
+                                color: Color(0xff7DADB2),
+                                elevation: 5,
+                                child: Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(wachNum.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24)),
+                                ),
+                                onPressed: () {}),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                            text: totalPrice.toString(),
+                            style: TextStyle(
+                                color: Color(0xFFFFA200), fontSize: 20),
+                            children: [
+                              TextSpan(
+                                  text: widget.item.currency.toString(),
+                                  style: TextStyle(
+                                      color: Color(0xFFFFA200),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14))
+                            ]),
+                      ),
+                      Text("السعر الكلي",
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 26)),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    width: 40,
+                    height: 40,
+                    child:circularProgress()
+                  ),
+                ],
+              ),
+            );
+          }
           if (state is CartUninitial) {
             return SingleChildScrollView(
               child: Column(
@@ -703,6 +933,15 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                       Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Text(item.nameAr,
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 18)),
+                        ),
+                      ),
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 20, right: 0, left: 0),

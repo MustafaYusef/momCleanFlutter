@@ -47,8 +47,7 @@ abstract class CartState extends Equatable {
   @override
   List<Object> get props => [];
 }
-
-
+class CartAddLoading extends CartState {}
 
 class CartLoading extends CartState {}
 class ItemAddedSuccusfully extends CartState {}
@@ -92,7 +91,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     var token = await prefs.getString('token');
       try {
      
-          yield CartLoading();
+          yield CartAddLoading();
           if(event.status==1){
             final cart1 = await Repo.addItemToCart(token,event.item_id,event.countWach,"wash");
              

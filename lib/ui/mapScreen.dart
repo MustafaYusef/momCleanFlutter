@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/ordersScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -214,8 +215,8 @@ getNum();
                               try {
                                 final res =
                                     await repo.makeNormalOrder(token, lat, lon);
-                                    showAlertDialog(context);
-                                    
+                                    //showAlertDialog(context);
+                               showAlert(context);
                               } on SocketException catch (_) {
                                 Toast.show("لا يوجد اتصال بالشبكة", context,
                                     duration: Toast.LENGTH_LONG,
@@ -321,6 +322,59 @@ getNum();
         return alert;
       },
     );
+  }
+  showAlert(BuildContext context){
+                   var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color:  Color(0xffFFB300),
+      ),
+    );
+                                     Alert(
+      context: context,
+      type: AlertType.info,
+      title:"شكرا ألك لأنك طلبت من عدنا ",
+      desc:"راح نتصل بيك قريبا",
+       style:alertStyle ,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "تم",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: (){
+Navigator.pop(context);
+  Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (_) {
+                              return OrderScreen();
+                            }));
+          } ,
+          color: Theme.of(context).primaryColor,
+        ),
+        // DialogButton(
+        //   child: Text(
+        //     "GRADIENT",
+        //     style: TextStyle(color: Colors.white, fontSize: 20),
+        //   ),
+        //   onPressed: () => Navigator.pop(context),
+        //   gradient: LinearGradient(colors: [
+        //     Color.fromRGBO(116, 116, 191, 1.0),
+        //     Color.fromRGBO(52, 138, 199, 1.0)
+        //   ]),
+        // )
+      ],
+    ).show();
   }
   // Future<void> _goToTheLake() async {
   //   final GoogleMapController controller = await _controller.future;

@@ -28,9 +28,9 @@ int notifNum=0;
 
   @override
   void initState() {
-    // TODO: implement initState
+ 
     super.initState();
-   getImage();
+    getImage();
   }
   getImage() async {
  SharedPreferences prefs = await SharedPreferences.getInstance();

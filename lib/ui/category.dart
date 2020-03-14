@@ -20,24 +20,22 @@ class categoty extends StatefulWidget {
 }
 
 class _categotyState extends State<categoty> {
-
-
-  int notifNum=0;
-  int cartNum=0;
-@override
-   initState()  {
+  int notifNum = 0;
+  int cartNum = 0;
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
-  
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   categoryRes catRes;
   int indexSelected = 0;
   bool isloading = false;
@@ -97,16 +95,21 @@ class _categotyState extends State<categoty> {
                                         .category.data.categories[index].id));
                               },
                               child: Chip(
-                                
                                 backgroundColor: indexSelected != index
                                     ? Colors.grey[300]
                                     : Color(0xff2498A1),
                                 label: Container(
                                   margin: EdgeInsets.all(0),
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Text(state
-                                      .category.data.categories[index].nameAr,
-                                      style: TextStyle(color:  indexSelected != index?Colors.black:Colors.white,fontSize: 16),),
+                                  child: Text(
+                                    state
+                                        .category.data.categories[index].nameAr,
+                                    style: TextStyle(
+                                        color: indexSelected != index
+                                            ? Colors.black
+                                            : Colors.white,
+                                        fontSize: 16),
+                                  ),
                                 ),
                               ),
                             ),
@@ -264,8 +267,17 @@ class _categotyState extends State<categoty> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Text(item.nameAr,
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16)),
+                        ),
+                      ),
+                      Padding(
                         padding:
-                            const EdgeInsets.only(top: 20, right: 2, left: 2),
+                            const EdgeInsets.only(top: 10, right: 2, left: 2),
                         child: item.washPrice != 0
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
