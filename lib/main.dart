@@ -88,8 +88,8 @@ class _MainScreenState extends State<MainScreen> {
   int cartNum = 0;
   @override
   initState() {
-    super.initState();
     getNum();
+    super.initState();
   }
 
   getNum() async {
@@ -98,17 +98,48 @@ class _MainScreenState extends State<MainScreen> {
       notifNum = prefs.getInt('notification');
       cartNum = prefs.getInt('cart');
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     OneSignal.shared.init("5f0a5368-692a-48b4-8420-95fae35c1ef6", iOSSettings: {
       OSiOSSettings.autoPrompt: true,
       OSiOSSettings.inAppLaunchUrl: true
     });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
+    OneSignal.shared
+        .setNotificationReceivedHandler((OSNotification notification) {
+      // will be called whenever a notification is received
+    });
 
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      // will be called whenever a notification is opened/button pressed.
+    });
+
+    OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
+      // will be called whenever the permission changes
+      // (ie. user taps Allow on the permission prompt in iOS)
+    });
+
+    OneSignal.shared
+        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+      // will be called whenever the subscription changes
+      //(ie. user gets registered with OneSignal and gets a user ID)
+    });
+
+    OneSignal.shared.setEmailSubscriptionObserver(
+        (OSEmailSubscriptionStateChanges emailChanges) {
+      // will be called whenever then user's email subscription changes
+      // (ie. OneSignal.setEmail(email) is called and the user gets registered
+    });
+    // For each of the above functions, you can also pass in a
+// reference to a function as well:
+
+    OneSignal.shared.promptUserForPushNotificationPermission();
+
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     //OneSignal.shared.promptUserForPushNotificationPermission();
     Future<String> getuserId() async {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
@@ -165,7 +196,8 @@ class _MainScreenState extends State<MainScreen> {
                                 scrollDirection: Axis.vertical,
                                 child: Container(
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Container(
                                           margin: EdgeInsets.only(
@@ -183,7 +215,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       fontSize: 24,
                                                       color: Colors.grey[800]),
                                                 ),
-                                                textDirection: TextDirection.rtl,
+                                                textDirection:
+                                                    TextDirection.rtl,
                                               ),
                                               Row(
                                                 mainAxisAlignment:
@@ -196,7 +229,8 @@ class _MainScreenState extends State<MainScreen> {
                                                     child: Directionality(
                                                       child: InkWell(
                                                         onTap: () {
-                                                          Navigator.push(context,
+                                                          Navigator.push(
+                                                              context,
                                                               MaterialPageRoute(
                                                                   builder: (_) {
                                                             return packageScreen();
@@ -239,13 +273,15 @@ class _MainScreenState extends State<MainScreen> {
                                           padding: EdgeInsets.only(right: 10),
                                           child: Directionality(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "أطلب هسه",
                                                 style: TextStyle(
                                                     fontSize: 22,
                                                     color: Colors.grey[700],
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                             textDirection: TextDirection.rtl,
@@ -296,18 +332,16 @@ class _MainScreenState extends State<MainScreen> {
                                                                           BorderRadius.circular(
                                                                               25),
                                                                       gradient: LinearGradient(
-                                                                          begin: Alignment
-                                                                              .bottomCenter,
+                                                                          begin:
+                                                                              Alignment.bottomCenter,
                                                                           end: Alignment.topCenter,
                                                                           stops: [
                                                                             0.15,
                                                                             1.0
                                                                           ],
                                                                           colors: [
-                                                                            Color(
-                                                                                0xff2A815B),
-                                                                            Color(
-                                                                                0xff35D289)
+                                                                            Color(0xff2A815B),
+                                                                            Color(0xff35D289)
                                                                           ])),
                                                                   child: Icon(
                                                                     Icons
@@ -317,10 +351,12 @@ class _MainScreenState extends State<MainScreen> {
                                                                   )),
                                                               Text(
                                                                 "خليها \nعلى باقتك",
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontSize: 16,
                                                                   color: Colors
-                                                                      .grey[700],
+                                                                          .grey[
+                                                                      700],
                                                                 ),
                                                               ),
                                                             ],
@@ -367,12 +403,10 @@ class _MainScreenState extends State<MainScreen> {
                                                                       BoxDecoration(
                                                                           color: Colors
                                                                               .greenAccent,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                                  25),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              25),
                                                                           gradient: LinearGradient(
-                                                                              begin:
-                                                                                  Alignment.bottomCenter,
+                                                                              begin: Alignment.bottomCenter,
                                                                               end: Alignment.topCenter,
                                                                               stops: [
                                                                                 0.15,
@@ -390,10 +424,12 @@ class _MainScreenState extends State<MainScreen> {
                                                                   )),
                                                               Text(
                                                                 "نحاسبك \nعلى القطعة",
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontSize: 16,
                                                                   color: Colors
-                                                                      .grey[700],
+                                                                          .grey[
+                                                                      700],
                                                                 ),
                                                               ),
                                                             ],
@@ -424,11 +460,13 @@ class _MainScreenState extends State<MainScreen> {
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (_) {
+                                                                    builder:
+                                                                        (_) {
                                                               return OrderScreen();
                                                             }));
                                                           },
-                                                          child: Text("عرض الكل",
+                                                          child: Text(
+                                                              "عرض الكل",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .deepOrange,
@@ -440,7 +478,8 @@ class _MainScreenState extends State<MainScreen> {
                                                             TextDirection.rtl,
                                                       ),
                                                       Directionality(
-                                                        child: Text("أخر الطلبات",
+                                                        child: Text(
+                                                            "أخر الطلبات",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .grey[600],
