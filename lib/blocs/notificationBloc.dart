@@ -110,6 +110,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           yield NotificationLoading();
           final notification = await Repo.deleteNotification(token, event.id);
           //yield NotificationDeleted();
+            final notifAndCartNum = await Repo.getNotifcAndCart(token);
+
+        await prefs.setInt(
+            "notification", notifAndCartNum.data.statistics.notifications);
+        await prefs.setInt("cart", notifAndCartNum.data.statistics.cart);
+
           return;
         
       } on SocketException catch (_) {

@@ -36,15 +36,15 @@ class BuyPackageEvent extends PackageEvent {
   @override
   List<Object> get props => [id, token];
 }
+
 class FetchMyPackageDetails extends PackageEvent {
   final int id;
- 
+
   FetchMyPackageDetails(this.id);
 
   @override
   List<Object> get props => [id];
 }
-
 
 abstract class PackageState extends Equatable {
   const PackageState();
@@ -60,15 +60,13 @@ class MyPackageDetailsLoaded extends PackageState {
 
   MyPackageDetailsLoaded({this.myPackage});
 
-
   @override
   List<Object> get props => [myPackage];
 }
 
 class PackageError extends PackageState {
-  String msg;
+  int msg;
   PackageError(this.msg);
-
 }
 
 class PackageNetworkError extends PackageState {}
@@ -147,16 +145,14 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
         yield PackageNetworkError();
       } catch (_) {
         // print("error    "+_);
-        yield PackageError(_.toString());
+        yield PackageError(_);
       }
     } else if (event is BuyPackageEvent) {
       try {
-
-
         print(event.id);
         yield PackageLoading();
         final package = await Repo.buyPackage(event.token, event.id);
-
+        print("error    " + package.statusCode.toString());
         //print(package.data.packages[0].nameAr);
         yield PackageBuySuccessfully("تم ارسال طلب الأشتراك");
 
@@ -164,13 +160,12 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
       } on SocketException catch (_) {
         yield PackageNetworkError();
       } catch (_) {
-        // print("error    "+_);
-        yield PackageError(_.toString());
+        //print("error    "+_);
+
+        yield PackageError(400);
       }
-    }else if(event is FetchMyPackageDetails){
+    } else if (event is FetchMyPackageDetails) {
       try {
-
-
         print(event.id);
         yield PackageLoading();
         final package = await Repo.getUserPackageItems(event.id);
@@ -183,7 +178,7 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
         yield PackageNetworkError();
       } catch (_) {
         // print("error    "+_);
-        yield PackageError(_.toString());
+        yield PackageError(_);
       }
     }
   }

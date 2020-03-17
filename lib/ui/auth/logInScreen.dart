@@ -764,7 +764,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                     }
                      catch (e) {
-                      Toast.show(e.toString(), context,
+                      Toast.show("هذا الرقم مستخدم سابقاً", context,
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                     }
                   } else {

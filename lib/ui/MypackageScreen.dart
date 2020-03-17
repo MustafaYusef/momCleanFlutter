@@ -42,7 +42,6 @@ class _MypackageScreenState extends State<MypackageScreen> {
     return Scaffold(
       endDrawer: drawar(
         index: 4,
-    
       ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
@@ -145,38 +144,46 @@ class _MypackageScreenState extends State<MypackageScreen> {
                                                 int index) {
                                               return InkWell(
                                                 onTap: () {
-                                                  if(state
-                                                .myPackage.data.packages[index].sameArea&&
-                                                state
-                                                .myPackage.data.packages[index].isActive){
-Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (_) {
-                                                    return MypackageDetails(
-                                                        state
-                                                            .myPackage
-                                                            .data
-                                                            .packages[index]
-                                                            .userPackageId,
-                                                        state
-                                                            .myPackage
-                                                            .data
-                                                            .packages[index]
-                                                            .packageDetails
-                                                            .nameAr,
-                                                        state
-                                                            .myPackage
-                                                            .data
-                                                            .packages[index]
-                                                            .packageDetails
-                                                            .descriptionAr);
-                                                  }));
-                                                  }else{
-                                                Toast.show("هذه الباقة منتهية الصلاحية او غير فعالة", context,
-                                  duration: Toast.LENGTH_LONG,
-                                  gravity: Toast.BOTTOM);
+                                                  if (state
+                                                          .myPackage
+                                                          .data
+                                                          .packages[index]
+                                                          .sameArea &&
+                                                      state
+                                                          .myPackage
+                                                          .data
+                                                          .packages[index]
+                                                          .isActive) {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) {
+                                                      return MypackageDetails(
+                                                          state
+                                                              .myPackage
+                                                              .data
+                                                              .packages[index]
+                                                              .userPackageId,
+                                                          state
+                                                              .myPackage
+                                                              .data
+                                                              .packages[index]
+                                                              .packageDetails
+                                                              .nameAr,
+                                                          state
+                                                              .myPackage
+                                                              .data
+                                                              .packages[index]
+                                                              .packageDetails
+                                                              .descriptionAr);
+                                                    }));
+                                                  } else {
+                                                    Toast.show(
+                                                        "هذه الباقة منتهية الصلاحية او غير فعالة",
+                                                        context,
+                                                        duration:
+                                                            Toast.LENGTH_LONG,
+                                                        gravity: Toast.BOTTOM);
                                                   }
-                                                  
                                                 },
                                                 child: packageCard(state
                                                     .myPackage
@@ -292,8 +299,8 @@ Navigator.push(context,
                           ),
                           Directionality(
                             child: Text(
-                                "عدد الأيام: " +
-                                    pack.packageDetails.days.toString(),
+                                "تاريخ النفاذ: " +
+                                    pack.expireAt,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12)),
                             textDirection: TextDirection.rtl,

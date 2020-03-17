@@ -74,7 +74,7 @@ Future<signUpRes> buyPackage(String token,int packageId) async {
     if (response.statusCode == 200||response.statusCode == 201) {
       return signUpResFromJson(response.body);
     } else {
-      throw Exception(signUpResFromJson(response.body).message);
+      throw Exception(signUpResFromJson(response.body).statusCode);
     }
   }
 
@@ -129,12 +129,12 @@ Future<HomeBanners> getHomePackages(double lon,double lat) async {
   }
 HomeBanners HomeBannersFromJson(String str) => HomeBanners.fromJson(json.decode(str));
 
-Future<signUpRes> addItemToCart(String token,int item_id,int count,String type) async {
+Future<int> addItemToCart(String token,int item_id,int count,String type) async {
     final response = await post(
         baseUrl+"auth/cart",headers: {"Authorization":token},
          body:{"item_id":item_id.toString(),"count":count.toString(),"type":type});
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return signUpResFromJson(response.body);
+      return signUpResFromJson(response.body).statusCode;
     } else {
       throw Exception('حدث خطأ ما');
     }

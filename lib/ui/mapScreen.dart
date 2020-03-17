@@ -69,27 +69,27 @@ class MapScreenState extends State<MapScreen> {
           }),
           position: LatLng(lat, lon)));
     });
-getNum();
-
+    getNum();
+    showAlertDragPin(context);
   }
-    int notifNum=0;
-  int cartNum=0;
 
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+  int notifNum = 0;
+  int cartNum = 0;
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
 
   bool mapType = true;
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        endDrawer: drawar(index: 0 ),
+      endDrawer: drawar(index: 0),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -101,9 +101,11 @@ getNum();
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("تحديد الموقع",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "تحديد الموقع",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
       body: SafeArea(
@@ -185,7 +187,7 @@ getNum();
             alignment: Alignment.bottomCenter,
             child: !isLoading
                 ? Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -194,7 +196,7 @@ getNum();
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: RaisedButton(
-                          color:Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor,
                           elevation: 5,
                           child: Directionality(
                             textDirection: TextDirection.rtl,
@@ -215,8 +217,8 @@ getNum();
                               try {
                                 final res =
                                     await repo.makeNormalOrder(token, lat, lon);
-                                    //showAlertDialog(context);
-                               showAlert(context);
+                                //showAlertDialog(context);
+                                showAlert(context);
                               } on SocketException catch (_) {
                                 Toast.show("لا يوجد اتصال بالشبكة", context,
                                     duration: Toast.LENGTH_LONG,
@@ -228,10 +230,16 @@ getNum();
                               }
                             } else {
                               try {
-                                final res =
-                                    await repo.makePackageOrder(token, lat, lon, widget.sum, widget.itemsId
-                                    , widget.counts,widget.newcounts, widget.id);
-                                     showAlertDialog(context);
+                                final res = await repo.makePackageOrder(
+                                    token,
+                                    lat,
+                                    lon,
+                                    widget.sum,
+                                    widget.itemsId,
+                                    widget.counts,
+                                    widget.newcounts,
+                                    widget.id);
+                                showAlert(context);
                               } on SocketException catch (_) {
                                 Toast.show("لا يوجد اتصال بالشبكة", context,
                                     duration: Toast.LENGTH_LONG,
@@ -246,11 +254,9 @@ getNum();
                             setState(() {
                               isLoading = false;
                             });
-                              Toast.show("تم ارسال الطلب ينجاح", context,
-                                    duration: Toast.LENGTH_LONG,
-                                    gravity: Toast.BOTTOM);
-                              
-                            
+                            Toast.show("تم ارسال الطلب ينجاح", context,
+                                duration: Toast.LENGTH_LONG,
+                                gravity: Toast.BOTTOM);
                           }),
                     ),
                   )
@@ -266,68 +272,68 @@ getNum();
       ),
     );
   }
- showAlertDialog(BuildContext context) {
-    // set up the buttons
- 
-    Widget continueButton = Container(
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    width: 100,
-                    height: 50,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: RaisedButton(
-                          color:Theme.of(context).primaryColor,
-                          elevation: 5,
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: Text("تم",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                          onPressed: () async {
-                           Navigator.of(context).pop();
-                           Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) {
-                              return OrderScreen();
-                            }));
-                          }),
-                    ),
-                  );
+//  showAlertDialog(BuildContext context) {
+//     // set up the buttons
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
+//     Widget continueButton = Container(
+//                     margin: EdgeInsets.all(10),
+//                     decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(20),
+//                     ),
+//                     width: 100,
+//                     height: 50,
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: RaisedButton(
+//                           color:Theme.of(context).primaryColor,
+//                           elevation: 5,
+//                           child: Directionality(
+//                             textDirection: TextDirection.rtl,
+//                             child: Text("تم",
+//                                 style: TextStyle(
+//                                     color: Colors.white, fontSize: 20)),
+//                           ),
+//                           onPressed: () async {
+//                            Navigator.of(context).pop();
+//                            Navigator.pushReplacement(context,
+//                                 MaterialPageRoute(builder: (_) {
+//                               return OrderScreen();
+//                             }));
+//                           }),
+//                     ),
+//                   );
 
-      title: Directionality(textDirection: TextDirection.rtl,
-        child: Text("شكرا ألك لأنك طلبت من عدنا ")),
-      content: Directionality(
-        textDirection: TextDirection.rtl,
-              child: Text(
-            "راح نتصل بيك قريبا",style: TextStyle(color: Color(0xffFFB300),
-            fontWeight: FontWeight.bold,fontSize: 18),),
-      ),
-      actions: [
-      
-        continueButton,
-      ],
-    );
+//     // set up the AlertDialog
+//     AlertDialog alert = AlertDialog(
 
-    // show the dialog
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  showAlert(BuildContext context){
-                   var alertStyle = AlertStyle(
+//       title: Directionality(textDirection: TextDirection.rtl,
+//         child: Text("شكرا ألك لأنك طلبت من عدنا ")),
+//       content: Directionality(
+//         textDirection: TextDirection.rtl,
+//               child: Text(
+//             "راح نتصل بيك قريبا",style: TextStyle(color: Color(0xffFFB300),
+//             fontWeight: FontWeight.bold,fontSize: 18),),
+//       ),
+//       actions: [
+
+//         continueButton,
+//       ],
+//     );
+
+//     // show the dialog
+//     showDialog(
+//       barrierDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return alert;
+//       },
+//     );
+//   }
+
+  showAlert(BuildContext context) {
+    var alertStyle = AlertStyle(
       animationType: AnimationType.fromBottom,
       isCloseButton: false,
-
       isOverlayTapDismiss: false,
       descStyle: TextStyle(fontWeight: FontWeight.bold),
       animationDuration: Duration(milliseconds: 400),
@@ -338,28 +344,78 @@ getNum();
         ),
       ),
       titleStyle: TextStyle(
-        color:  Color(0xffFFB300),
+        color: Color(0xffFFB300),
       ),
     );
-                                     Alert(
+    Alert(
       context: context,
       type: AlertType.info,
-      title:"شكرا ألك لأنك طلبت من عدنا ",
-      desc:"راح نتصل بيك قريبا",
-       style:alertStyle ,
+      title: "شكرا ألك لأنك طلبت من عدنا ",
+      desc: "راح نتصل بيك قريبا",
+      style: alertStyle,
       buttons: [
         DialogButton(
           child: Text(
             "تم",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: (){
-Navigator.pop(context);
-  Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) {
-                              return OrderScreen();
-                            }));
-          } ,
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+              return OrderScreen();
+            }));
+          },
+          color: Theme.of(context).primaryColor,
+        ),
+        // DialogButton(
+        //   child: Text(
+        //     "GRADIENT",
+        //     style: TextStyle(color: Colors.white, fontSize: 20),
+        //   ),
+        //   onPressed: () => Navigator.pop(context),
+        //   gradient: LinearGradient(colors: [
+        //     Color.fromRGBO(116, 116, 191, 1.0),
+        //     Color.fromRGBO(52, 138, 199, 1.0)
+        //   ]),
+        // )
+      ],
+    ).show();
+  }
+  showAlertDragPin(BuildContext context) {
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: true,
+      isOverlayTapDismiss: true,
+      
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color: Color(0xffFFB300),
+      ),
+    );
+    Alert(
+      context: context,
+      type: AlertType.info,
+      
+      title: "تغيير الموقع",
+      desc: "اضغط مطولاً على الدبوس لتغيير موقعك",
+      style: alertStyle,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "تم",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            
+          },
           color: Theme.of(context).primaryColor,
         ),
         // DialogButton(

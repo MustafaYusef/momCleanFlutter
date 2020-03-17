@@ -161,7 +161,7 @@ class orderListCard extends StatelessWidget {
                     splashColor: Colors.grey[500],
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return OrderDetailsScreen(myorder.id, myorder.type);
+                        return OrderDetailsScreen(myorder.id, myorder.type,myorder.status);
                       }));
                     },
                     child: Row(

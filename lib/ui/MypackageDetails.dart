@@ -214,7 +214,7 @@ class _MypackageDetailsState extends State<MypackageDetails> {
             return networkErrorHome("لا يوجد اتصال بالشبكة");
           }
           if (state is PackageError) {
-            return networkErrorHome(state.msg);
+            return networkErrorHome(state.msg.toString());
           }
         })));
   }
@@ -229,7 +229,7 @@ class _MypackageDetailsState extends State<MypackageDetails> {
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(20),
           child: Stack(
             children: <Widget>[
               Row(
@@ -238,7 +238,7 @@ class _MypackageDetailsState extends State<MypackageDetails> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
                               begin: Alignment.bottomRight,
                               end: Alignment.topLeft,

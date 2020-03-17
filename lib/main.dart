@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mom_clean/blocs/homeBloc.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/auth/profile.dart';
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-        return MainScreen();
+        return MyLottie();
       }));
     });
   }
@@ -72,6 +73,40 @@ class _MyAppState extends State<MyApp> {
           fit: BoxFit.contain,
         ),
       ),
+    );
+  }
+}
+
+class MyLottie extends StatefulWidget {
+  @override
+  _MyLottieState createState() => _MyLottieState();
+}
+
+class _MyLottieState extends State<MyLottie> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(milliseconds: 5550), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+        return MainScreen();
+      }));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+         Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Lottie.asset(
+              'assets/images/lottie.json',
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.cover,
+            )
+     
     );
   }
 }
@@ -126,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
     ));
 
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       endDrawer: drawar(index: 0),
       body: Builder(builder: (cont) {
         return SafeArea(
@@ -165,7 +200,8 @@ class _MainScreenState extends State<MainScreen> {
                                 scrollDirection: Axis.vertical,
                                 child: Container(
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Container(
                                           margin: EdgeInsets.only(
@@ -183,7 +219,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       fontSize: 24,
                                                       color: Colors.grey[800]),
                                                 ),
-                                                textDirection: TextDirection.rtl,
+                                                textDirection:
+                                                    TextDirection.rtl,
                                               ),
                                               Row(
                                                 mainAxisAlignment:
@@ -196,7 +233,8 @@ class _MainScreenState extends State<MainScreen> {
                                                     child: Directionality(
                                                       child: InkWell(
                                                         onTap: () {
-                                                          Navigator.push(context,
+                                                          Navigator.push(
+                                                              context,
                                                               MaterialPageRoute(
                                                                   builder: (_) {
                                                             return packageScreen();
@@ -239,13 +277,15 @@ class _MainScreenState extends State<MainScreen> {
                                           padding: EdgeInsets.only(right: 10),
                                           child: Directionality(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "أطلب هسه",
                                                 style: TextStyle(
                                                     fontSize: 22,
                                                     color: Colors.grey[700],
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                             textDirection: TextDirection.rtl,
@@ -296,18 +336,16 @@ class _MainScreenState extends State<MainScreen> {
                                                                           BorderRadius.circular(
                                                                               25),
                                                                       gradient: LinearGradient(
-                                                                          begin: Alignment
-                                                                              .bottomCenter,
+                                                                          begin:
+                                                                              Alignment.bottomCenter,
                                                                           end: Alignment.topCenter,
                                                                           stops: [
                                                                             0.15,
                                                                             1.0
                                                                           ],
                                                                           colors: [
-                                                                            Color(
-                                                                                0xff2A815B),
-                                                                            Color(
-                                                                                0xff35D289)
+                                                                            Color(0xff2A815B),
+                                                                            Color(0xff35D289)
                                                                           ])),
                                                                   child: Icon(
                                                                     Icons
@@ -317,10 +355,12 @@ class _MainScreenState extends State<MainScreen> {
                                                                   )),
                                                               Text(
                                                                 "خليها \nعلى باقتك",
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontSize: 16,
                                                                   color: Colors
-                                                                      .grey[700],
+                                                                          .grey[
+                                                                      700],
                                                                 ),
                                                               ),
                                                             ],
@@ -367,12 +407,10 @@ class _MainScreenState extends State<MainScreen> {
                                                                       BoxDecoration(
                                                                           color: Colors
                                                                               .greenAccent,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                                  25),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              25),
                                                                           gradient: LinearGradient(
-                                                                              begin:
-                                                                                  Alignment.bottomCenter,
+                                                                              begin: Alignment.bottomCenter,
                                                                               end: Alignment.topCenter,
                                                                               stops: [
                                                                                 0.15,
@@ -390,10 +428,12 @@ class _MainScreenState extends State<MainScreen> {
                                                                   )),
                                                               Text(
                                                                 "نحاسبك \nعلى القطعة",
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontSize: 16,
                                                                   color: Colors
-                                                                      .grey[700],
+                                                                          .grey[
+                                                                      700],
                                                                 ),
                                                               ),
                                                             ],
@@ -424,11 +464,13 @@ class _MainScreenState extends State<MainScreen> {
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (_) {
+                                                                    builder:
+                                                                        (_) {
                                                               return OrderScreen();
                                                             }));
                                                           },
-                                                          child: Text("عرض الكل",
+                                                          child: Text(
+                                                              "عرض الكل",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .deepOrange,
@@ -440,7 +482,8 @@ class _MainScreenState extends State<MainScreen> {
                                                             TextDirection.rtl,
                                                       ),
                                                       Directionality(
-                                                        child: Text("أخر الطلبات",
+                                                        child: Text(
+                                                            "أخر الطلبات",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .grey[600],

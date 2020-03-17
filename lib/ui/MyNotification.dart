@@ -313,64 +313,64 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
     ).show();
   }
 
-  Widget DeleteAlert(BuildContext context1, int id) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
-      content: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          width: 500,
-          height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text(
-                "هل تريد حذف هذا الأشعار",
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.grey[900],
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                margin:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                width: MediaQuery.of(context1).size.width,
-                height: 50,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: RaisedButton(
-                    color: Colors.amber[300],
-                    elevation: 5,
-                    child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Text("تأكيد",
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
-                    ),
-                    onPressed: () async {
-                      //print("clicked");
-                      Navigator.pop(context1);
-                      await BlocProvider.of<NotificationBloc>(context1)
-                          .add(CancelNotification(id));
+  // Widget DeleteAlert(BuildContext context1, int id) {
+  //   return AlertDialog(
+  //     shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.all(Radius.circular(10.0))),
+  //     content: Padding(
+  //       padding: const EdgeInsets.all(0.0),
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(20),
+  //         ),
+  //         width: 500,
+  //         height: 150,
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //           children: <Widget>[
+  //             Text(
+  //               "هل تريد حذف هذا الأشعار",
+  //               style: TextStyle(
+  //                 fontSize: 22,
+  //                 color: Colors.grey[900],
+  //               ),
+  //             ),
+  //             Container(
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(20),
+  //               ),
+  //               margin:
+  //                   EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+  //               width: MediaQuery.of(context1).size.width,
+  //               height: 50,
+  //               child: ClipRRect(
+  //                 borderRadius: BorderRadius.circular(20),
+  //                 child: RaisedButton(
+  //                   color: Colors.amber[300],
+  //                   elevation: 5,
+  //                   child: Directionality(
+  //                     textDirection: TextDirection.rtl,
+  //                     child: Text("تأكيد",
+  //                         style: TextStyle(color: Colors.white, fontSize: 20)),
+  //                   ),
+  //                   onPressed: () async {
+  //                     //print("clicked");
+  //                     Navigator.pop(context1);
+  //                     await BlocProvider.of<NotificationBloc>(context1)
+  //                         .add(CancelNotification(id));
 
-                      Toast.show("تم حذف الأشعار بنجاح", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                      BlocProvider.of<NotificationBloc>(context)
-                          .add(FetchNotification());
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //                     Toast.show("تم حذف الأشعار بنجاح", context,
+  //                         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  //                     BlocProvider.of<NotificationBloc>(context)
+  //                         .add(FetchNotification());
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -17,32 +17,34 @@ class MyRequestScreen extends StatefulWidget {
 }
 
 class _MyRequestScreenState extends State<MyRequestScreen> {
-     Color cancelRed = Color(0xffC50F0F);
-    Color green = Color(0xff169E23);
-    Color yello = Color(0xffFFA200);
+  Color cancelRed = Color(0xffC50F0F);
+  Color green = Color(0xff169E23);
+  Color yello = Color(0xffFFA200);
 
-     int notifNum=0;
-  int cartNum=0;
+  int notifNum = 0;
+  int cartNum = 0;
 
-@override
-   initState()  {
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: drawar(index: 6,),
-    
+      endDrawer: drawar(
+        index: 6,
+      ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
@@ -54,16 +56,17 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("طلبات الأشتراك",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "طلبات الأشتراك بالباقات",
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
       body: Builder(builder: (cont) {
         return SafeArea(
           child: Column(
             children: <Widget>[
-             
               Expanded(
                 child: BlocProvider(
                   create: (context) {
@@ -121,7 +124,7 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
                                                   .data
                                                   .myRequest[index]
                                                   .package
-                                                  .id);
+                                                  .id,true);
                                             }));
                                           },
                                           child: packageCard(state
@@ -150,7 +153,6 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
   }
 
   Widget packageCard(MyRequest pack) {
- 
     var baseUrlImage = "https://api.maamclean.com/files/";
     return Container(
         margin: EdgeInsets.all(10),
@@ -179,11 +181,11 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(10),
-                        
                         decoration: BoxDecoration(
                             color: getColorStatus(pack.status),
                             borderRadius: BorderRadius.circular(10)),
-                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: Directionality(
                           child: Text(
                             getStateusRequest(pack.status),
@@ -197,7 +199,8 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10)),
-                     padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: Directionality(
                           child: Text(
                             pack.package.nameAr,
@@ -293,8 +296,8 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
       return "مرفوض";
     }
   }
-    Color getColorStatus(Status status) {
-    
+
+  Color getColorStatus(Status status) {
     if (status == Status.ACCEPTED) {
       return green;
     } else if (status == Status.PANDING) {
