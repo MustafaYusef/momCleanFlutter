@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mom_clean/blocs/homeBloc.dart';
@@ -220,15 +221,17 @@ class _MypackageScreenState extends State<MypackageScreen> {
         child: Stack(
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: FadeInImage(
-                placeholder: AssetImage("assets/images/placeholder.png"),
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-                height: 240,
-                image: NetworkImage(baseUrlImage + pack.packageDetails.file),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                  height: 240,
+                  imageUrl: baseUrlImage + pack.packageDetails.file,
+                  placeholder: (context, url) =>
+                      Image.asset("assets/images/placeholder.png"),
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/images/placeholder.png"),
+                )),
             Container(
               height: 240,
               padding: EdgeInsets.only(right: 10, bottom: 10),
@@ -298,9 +301,7 @@ class _MypackageScreenState extends State<MypackageScreen> {
                             color: Colors.white,
                           ),
                           Directionality(
-                            child: Text(
-                                "تاريخ النفاذ: " +
-                                    pack.expireAt,
+                            child: Text("تاريخ النفاذ: " + pack.expireAt,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12)),
                             textDirection: TextDirection.rtl,

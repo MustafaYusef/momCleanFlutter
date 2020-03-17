@@ -11,6 +11,7 @@ import 'package:mom_clean/ui/auth/updateProfile.dart';
 import 'package:mom_clean/ui/custumWidget/customDrawer.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../main.dart';
 
@@ -53,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is ProfileLoaded) {
             return BuildContentState(state, context);
           }
-          if(state is ProfileError){
+          if (state is ProfileError) {
             return networkError(state.string);
           }
         }),
@@ -64,7 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 class networkError extends StatelessWidget {
   final msg;
-   networkError(this.msg, {
+  networkError(
+    this.msg, {
     Key key,
   }) : super(key: key);
 
@@ -86,8 +88,7 @@ class networkError extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: EdgeInsets.only(
-                top: 10, bottom: 20, left: 60, right: 60),
+            margin: EdgeInsets.only(top: 10, bottom: 20, left: 60, right: 60),
             width: MediaQuery.of(context).size.width,
             height: 50,
             child: ClipRRect(
@@ -98,12 +99,10 @@ class networkError extends StatelessWidget {
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: Text("اعادة المحاوله",
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20)),
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
                   ),
                   onPressed: () {
-                    BlocProvider.of<ProfileBloc>(context)
-                        .add(FetchProfile());
+                    BlocProvider.of<ProfileBloc>(context).add(FetchProfile());
                   }),
             ),
           ),
@@ -147,7 +146,8 @@ class _BuildContentStateState extends State<BuildContentState> {
 
     _postBloc = BlocProvider.of<ProfileBloc>(widget.context);
   }
-RefreshController _refreshController =
+
+  RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
@@ -156,14 +156,14 @@ RefreshController _refreshController =
     }
     if (widget.state is ProfileLoaded) {
       return SmartRefresher(
-              child: SingleChildScrollView(
+        child: SingleChildScrollView(
             child: buildProfileBody(widget.state.profile)),
-               enablePullDown: true,
-                        header: WaterDropMaterialHeader(),
-                        controller: _refreshController,
-             onRefresh: (){
-               BlocProvider.of<ProfileBloc>(widget.context).add(FetchProfile());
-             },
+        enablePullDown: true,
+        header: WaterDropMaterialHeader(),
+        controller: _refreshController,
+        onRefresh: () {
+          BlocProvider.of<ProfileBloc>(widget.context).add(FetchProfile());
+        },
       );
     }
   }
@@ -179,7 +179,6 @@ class buildProfileBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     
       color: Colors.grey[200],
       child:
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
@@ -188,11 +187,19 @@ class buildProfileBody extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              FadeInImage(
-                placeholder: AssetImage("assets/images/placeholder.png"),
+              CachedNetworkImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(baseUrlImage + data.data.profile.photo),
+                imageUrl: baseUrlImage + data.data.profile.photo,
+                placeholder: (context, url) =>
+                    Image.asset("assets/images/placeholder.png"),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/placeholder.png"),
               ),
+              // FadeInImage(
+              //   placeholder: AssetImage("assets/images/placeholder.png"),
+              //   fit: BoxFit.cover,
+              //   image: NetworkImage(baseUrlImage + data.data.profile.photo),
+              // ),
               InkWell(
                 onTap: () {
                   showGeneralDialog(
@@ -340,18 +347,20 @@ class buildProfileBody extends StatelessWidget {
         InkWell(
           onTap: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-   await prefs.setString('token',"");
-   await prefs.setInt('notification',0);
-   await prefs.setInt('cart',0);
-   await prefs.setString('name',"");
-   await prefs.setString('image',"");
+            await prefs.setString('token', "");
+            await prefs.setInt('notification', 0);
+            await prefs.setInt('cart', 0);
+            await prefs.setString('name', "");
+            await prefs.setString('image', "");
             Navigator.push(context, MaterialPageRoute(builder: (_) {
               return LoginScreen();
             }));
           },
           child: buildProfileRow(
             "تسجيل الخروج",
-            Icon(Icons.exit_to_app,textDirection: TextDirection.rtl, color: Theme.of(context).primaryColor),
+            Icon(Icons.exit_to_app,
+                textDirection: TextDirection.rtl,
+                color: Theme.of(context).primaryColor),
           ),
         ),
         Divider(

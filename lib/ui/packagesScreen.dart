@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -157,13 +158,17 @@ class _packageScreenState extends State<packageScreen> {
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: FadeInImage(
-                placeholder: AssetImage("assets/images/placeholder.png"),
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
+              child:CachedNetworkImage(
+                  fit: BoxFit.cover,
+               width: MediaQuery.of(context).size.width,
                 height: 240,
-                image: NetworkImage(baseUrlImage + pack.file),
-              ),
+                  imageUrl: baseUrlImage +pack.file,
+                  placeholder: (context, url) =>
+                      Image.asset("assets/images/placeholder.png"),
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/images/placeholder.png"),
+                )
+              
             ),
             Container(
               height: 240,

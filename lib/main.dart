@@ -25,12 +25,16 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 // For each of the above functions, you can also pass in a
 // reference to a function as well:
-var baseUrlImage = "https://maamclean.com/files/";
+var baseUrlImage = "https://api.maamclean.com/files/";
 
 void main() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:Color(0xff3C74C8),
+    ));
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -38,44 +42,44 @@ void main() {
       primaryColor: Color(0xff3C74C8),
       accentColor: Color(0xFFCA3D),
     ),
-    home: MyApp(),
+    home: MyLottie(),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => new _MyAppState();
-}
+// class MyApp extends StatefulWidget {
+//   @override
+//   _MyAppState createState() => new _MyAppState();
+// }
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-        return MyLottie();
-      }));
-    });
-  }
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     Timer(Duration(seconds: 3), () {
+//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+//         return MyLottie();
+//       }));
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: Theme.of(context).primaryColor,
-      child: Center(
-        child: Image.asset(
-          "assets/images/placeholder.png",
-          width: 300,
-          height: 300,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: MediaQuery.of(context).size.width,
+//       height: MediaQuery.of(context).size.height,
+//       color: Theme.of(context).primaryColor,
+//       child: Center(
+//         child: Image.asset(
+//           "assets/images/placeholder.png",
+//           width: 300,
+//           height: 300,
+//           fit: BoxFit.contain,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class MyLottie extends StatefulWidget {
   @override
@@ -96,17 +100,16 @@ class _MyLottieState extends State<MyLottie> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-         Container(
+    return Scaffold(
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Lottie.asset(
+            'assets/images/lottie.json',
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Lottie.asset(
-              'assets/images/lottie.json',
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.cover,
-            )
-     
+            fit: BoxFit.cover,
+          )),
     );
   }
 }
@@ -155,13 +158,8 @@ class _MainScreenState extends State<MainScreen> {
     RefreshController _refreshController =
         RefreshController(initialRefresh: false);
     var playerId = getuserId();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          Colors.lightBlue[900], //or set color with: Color(0xFF0000FF)
-    ));
-
+  
     return Scaffold(
-      backgroundColor: Colors.white,
       endDrawer: drawar(index: 0),
       body: Builder(builder: (cont) {
         return SafeArea(

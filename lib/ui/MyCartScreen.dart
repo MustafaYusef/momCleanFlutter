@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mom_clean/blocs/CartBloc.dart';
@@ -40,7 +41,6 @@ class _MyCartScreenState extends State<MyCartScreen> {
     return Scaffold(
       endDrawer: drawar(
         index: 7,
-        
       ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
@@ -82,9 +82,9 @@ class _MyCartScreenState extends State<MyCartScreen> {
                           return Dismissible(
                             child: buildCardOnce(state.cart.data.myCart[index]),
                             key: Key(index.toString()),
-                          
-                            onDismissed: (direction)  {
-                              showAlert(context,state.cart.data.myCart[index].id);
+                            onDismissed: (direction) {
+                              showAlert(
+                                  context, state.cart.data.myCart[index].id);
                             },
                           );
                         },
@@ -229,7 +229,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   //       Toast.show("تم حذف العنصر من السلة", context,
   //           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
   //       BlocProvider.of<CartBloc>(context).add(FetchCart());
-      
+
   //     Navigator.of(context).pop();
   //     },
   //   );
@@ -255,7 +255,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   //     },
   //   );
   // }
- showAlert(BuildContext context,int id) {
+  showAlert(BuildContext context, int id) {
     var alertStyle = AlertStyle(
       animationType: AnimationType.fromBottom,
       isCloseButton: false,
@@ -269,7 +269,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
         ),
       ),
       titleStyle: TextStyle(
-        color:Colors.red,
+        color: Colors.red,
       ),
     );
     Alert(
@@ -279,16 +279,16 @@ class _MyCartScreenState extends State<MyCartScreen> {
       desc: "",
       style: alertStyle,
       buttons: [
-          DialogButton(
+        DialogButton(
           child: Text(
             "خروج",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () async {
-              await BlocProvider.of<CartBloc>(context).add(FetchCart());
-        Navigator.of(context).pop();
+            await BlocProvider.of<CartBloc>(context).add(FetchCart());
+            Navigator.of(context).pop();
           },
-            color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColor,
           // gradient: LinearGradient(colors: [
           //   Color.fromRGBO(116, 116, 191, 1.0),
           //   Color.fromRGBO(52, 138, 199, 1.0)
@@ -300,20 +300,19 @@ class _MyCartScreenState extends State<MyCartScreen> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () async {
-        await BlocProvider.of<CartBloc>(context)
-            .add(DeleteItemCart(id));
-        Toast.show("تم حذف العنصر من السلة", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-        BlocProvider.of<CartBloc>(context).add(FetchCart());
-      
-      Navigator.of(context).pop();
-      },
-          color:  Colors.red,
+            await BlocProvider.of<CartBloc>(context).add(DeleteItemCart(id));
+            Toast.show("تم حذف العنصر من السلة", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            BlocProvider.of<CartBloc>(context).add(FetchCart());
+
+            Navigator.of(context).pop();
+          },
+          color: Colors.red,
         ),
-      
       ],
     ).show();
   }
+
   Widget buildCardOnce(MyCart item) {
     return Container(
       margin: EdgeInsets.all(10),
@@ -367,13 +366,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       child: Container(
                           width: 130,
                           height: double.infinity,
-                          child: FadeInImage(
+                          child: CachedNetworkImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              baseUrlImage + item.photo,
-                            ),
-                            placeholder:
-                                AssetImage("assets/images/placeholder.png"),
+                            imageUrl: baseUrlImage + item.photo,
+                            placeholder: (context, url) =>
+                                Image.asset("assets/images/placeholder.png"),
+                            errorWidget: (context, url, error) =>
+                                Image.asset("assets/images/placeholder.png"),
                           ))),
                 ),
                 Positioned(

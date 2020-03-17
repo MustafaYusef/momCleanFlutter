@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,15 +62,27 @@ class _sliderSectionState extends State<sliderSection> {
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: FadeInImage(
-                          placeholder:
-                              AssetImage("assets/images/placeholder.png"),
+                        child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           width: MediaQuery.of(context).size.width,
                           height: 240,
-                          image: NetworkImage(
-                              baseUrlImage + widget.packages[itemIndex].file),
+                          
+                          imageUrl:
+                              baseUrlImage + widget.packages[itemIndex].file,
+                          placeholder: (context, url) =>
+                              Image.asset("assets/images/placeholder.png"),
+                          errorWidget: (context, url, error) =>
+                              Image.asset("assets/images/placeholder.png"),
                         ),
+//                        FadeInImage(
+//                          placeholder:
+//                              AssetImage("assets/images/placeholder.png"),
+//                          fit: BoxFit.cover,
+//                          width: MediaQuery.of(context).size.width,
+//                          height: 240,
+//                          image: NetworkImage(
+//                              baseUrlImage + widget.packages[itemIndex].file),
+//                        ),
                       ),
                       Container(
                         padding: EdgeInsets.only(right: 10),

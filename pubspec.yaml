@@ -45,6 +45,8 @@ dependencies:
   date_format: ^1.0.8
   rflutter_alert: ^1.0.3
   lottie: ^0.3.1
+  cached_network_image: ^2.0.0
+  flutter_native_splash: ^0.1.9
  
 dev_dependencies:
   flutter_test:

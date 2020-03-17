@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mom_clean/blocs/homeBloc.dart';
@@ -161,13 +162,16 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: FadeInImage(
-                placeholder: AssetImage("assets/images/placeholder.png"),
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-                height: 240,
-                image: NetworkImage(baseUrlImage + pack.package.file),
-              ),
+              child:CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                  height: 240,
+                  imageUrl: baseUrlImage + pack.package.file,
+                  placeholder: (context, url) =>
+                      Image.asset("assets/images/placeholder.png"),
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/images/placeholder.png"),
+                ),
             ),
             Container(
               height: 240,

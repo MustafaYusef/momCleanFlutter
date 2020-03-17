@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -261,14 +262,15 @@ class _packageDetailsState extends State<packageDetails> {
                     child: Container(
                         width: 130,
                         height: double.infinity,
-                        child: FadeInImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            baseUrlImage + item.item.photo,
-                          ),
-                          placeholder:
-                              AssetImage("assets/images/placeholder.png"),
-                        ))),
+                        child:CachedNetworkImage(
+                  fit: BoxFit.cover,
+             
+                  imageUrl: baseUrlImage +item.item.photo,
+                  placeholder: (context, url) =>
+                      Image.asset("assets/images/placeholder.png"),
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/images/placeholder.png"),
+                ))),
               ),
               Positioned(
                 width: 100,
