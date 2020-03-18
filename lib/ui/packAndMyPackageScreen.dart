@@ -54,7 +54,7 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
             Stack(children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 69,
+                height: MediaQuery.of(context).size.height - 45,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -77,7 +77,7 @@ class _packAndMyPackageScreenState extends State<packAndMyPackageScreen> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 69,
+                height: MediaQuery.of(context).size.height - 45,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
