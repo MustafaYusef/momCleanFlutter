@@ -39,6 +39,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       endDrawer: drawar(
         index: 7,
       ),

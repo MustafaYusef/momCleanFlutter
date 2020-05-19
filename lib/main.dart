@@ -32,14 +32,10 @@ import 'package:flutter/services.dart';
 var baseUrlImage = "https://api.maamclean.com/files/";
 
 void main() {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-  statusBarColor: Colors.black, 
-));
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
-));
+  // FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+
   runApp(MaterialApp(
+     
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       fontFamily: "Regular",
@@ -84,17 +80,18 @@ void main() {
 //     );
 //   }
 // }
-class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-    );
-  }
+// class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       color: Colors.black,
+//     );
+//   }
 
-  @override
-  Size get preferredSize => Size(0.0, 0.0);
-}
+//   @override
+//   Size get preferredSize => Size(0.0, 0.0);
+// }
+
 class MyLottie extends StatefulWidget {
   @override
   _MyLottieState createState() => _MyLottieState();
@@ -114,24 +111,27 @@ class _MyLottieState extends State<MyLottie> {
 
   @override
   Widget build(BuildContext context) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-  statusBarColor: Colors.black, 
-));
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
-));
+       SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+    // FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    //   statusBarColor: Colors.black,
+    // ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
+    // ));
     return Scaffold(
-      appBar: EmptyAppBar(),
+      
       body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Lottie.asset(
+            'assets/images/lottie.json',
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Lottie.asset(
-      'assets/images/lottie.json',
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      fit: BoxFit.cover,
-            )),
+            fit: BoxFit.cover,
+          )),
     );
   }
 }
@@ -162,9 +162,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-  statusBarColor: Colors.black, 
-));
+    // FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    //   statusBarColor: Colors.black,
+    // ));
 //     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 //     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
 //   statusBarColor: Colors.blue,
@@ -188,13 +189,11 @@ class _MainScreenState extends State<MainScreen> {
     RefreshController _refreshController =
         RefreshController(initialRefresh: false);
     var playerId = getuserId();
-  
+
     return Scaffold(
-    
-      endDrawer: drawar(index: 0),
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-         value: SystemUiOverlayStyle.dark,
-              child: Builder(builder: (cont) {
+      backgroundColor: Colors.white,
+        endDrawer: drawar(index: 0),
+        body: Builder(builder: (cont) {
           return SafeArea(
             child: Column(
               children: <Widget>[
@@ -237,8 +236,9 @@ class _MainScreenState extends State<MainScreen> {
                                           Container(
                                             margin: EdgeInsets.only(
                                                 right: 10, bottom: 10),
-                                            width:
-                                                MediaQuery.of(context).size.width,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
@@ -248,7 +248,8 @@ class _MainScreenState extends State<MainScreen> {
                                                     "الباقات",
                                                     style: TextStyle(
                                                         fontSize: 24,
-                                                        color: Colors.grey[800]),
+                                                        color:
+                                                            Colors.grey[800]),
                                                   ),
                                                   textDirection:
                                                       TextDirection.rtl,
@@ -267,14 +268,17 @@ class _MainScreenState extends State<MainScreen> {
                                                             Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (_) {
+                                                                    builder:
+                                                                        (_) {
                                                               return packageScreen();
                                                             }));
                                                           },
-                                                          child: Text("عرض الكل",
+                                                          child: Text(
+                                                              "عرض الكل",
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .grey[800],
+                                                                          .grey[
+                                                                      800],
                                                                   fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
@@ -299,7 +303,8 @@ class _MainScreenState extends State<MainScreen> {
                                             ),
                                           ),
                                           sliderSection(
-                                              packages: state.package.data.banner,
+                                              packages:
+                                                  state.package.data.banner,
                                               current: _current),
                                           SizedBox(
                                             height: 10,
@@ -326,7 +331,8 @@ class _MainScreenState extends State<MainScreen> {
                                             margin: EdgeInsets.all(5),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: <Widget>[
                                                 Expanded(
                                                   flex: 1,
@@ -340,19 +346,19 @@ class _MainScreenState extends State<MainScreen> {
                                                     },
                                                     child: Card(
                                                         elevation: 5,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10)),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
                                                         child: Directionality(
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
                                                                     .all(5.0),
                                                             child: Row(
-                                                              children: <Widget>[
+                                                              children: <
+                                                                  Widget>[
                                                                 Container(
                                                                     width: 50,
                                                                     height: 50,
@@ -388,7 +394,8 @@ class _MainScreenState extends State<MainScreen> {
                                                                   "خليها \nعلى باقتك",
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     color: Colors
                                                                             .grey[
                                                                         700],
@@ -414,19 +421,19 @@ class _MainScreenState extends State<MainScreen> {
                                                     },
                                                     child: Card(
                                                         elevation: 5,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10)),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
                                                         child: Directionality(
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
                                                                     .all(5.0),
                                                             child: Row(
-                                                              children: <Widget>[
+                                                              children: <
+                                                                  Widget>[
                                                                 Container(
                                                                     width: 50,
                                                                     height: 50,
@@ -434,23 +441,18 @@ class _MainScreenState extends State<MainScreen> {
                                                                         .only(
                                                                             left:
                                                                                 5),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                            color: Colors
-                                                                                .greenAccent,
-                                                                            borderRadius: BorderRadius.circular(
-                                                                                25),
-                                                                            gradient: LinearGradient(
-                                                                                begin: Alignment.bottomCenter,
-                                                                                end: Alignment.topCenter,
-                                                                                stops: [
-                                                                                  0.15,
-                                                                                  1.0
-                                                                                ],
-                                                                                colors: [
-                                                                                  Color(0xff063051),
-                                                                                  Color(0xff35D2CD),
-                                                                                ])),
+                                                                    decoration: BoxDecoration(
+                                                                        color: Colors.greenAccent,
+                                                                        borderRadius: BorderRadius.circular(25),
+                                                                        gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, stops: [
+                                                                          0.15,
+                                                                          1.0
+                                                                        ], colors: [
+                                                                          Color(
+                                                                              0xff063051),
+                                                                          Color(
+                                                                              0xff35D2CD),
+                                                                        ])),
                                                                     child: Icon(
                                                                       Icons
                                                                           .local_atm,
@@ -461,7 +463,8 @@ class _MainScreenState extends State<MainScreen> {
                                                                   "نحاسبك \nعلى القطعة",
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     color: Colors
                                                                             .grey[
                                                                         700],
@@ -517,7 +520,8 @@ class _MainScreenState extends State<MainScreen> {
                                                               "أخر الطلبات",
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .grey[600],
+                                                                          .grey[
+                                                                      600],
                                                                   fontSize: 22,
                                                                   fontWeight:
                                                                       FontWeight
@@ -551,8 +555,8 @@ class _MainScreenState extends State<MainScreen> {
             ),
           );
         }),
-      ),
-    );
+      )
+    ;
   }
 }
 

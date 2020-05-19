@@ -59,10 +59,10 @@ class _drawarState extends State<drawar> {
         child: ListView(
           children: <Widget>[
             Container(
-              height: 150,
+              height: 160,
               child: DrawerHeader(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     CircleAvatar(
@@ -71,19 +71,21 @@ class _drawarState extends State<drawar> {
                           image == null ? " " : baseUrlImage + image),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 5,top:5),
+                      margin: EdgeInsets.only(right: 5, top: 5),
                       child: Directionality(
                           textDirection: TextDirection.rtl,
                           child: Text(
-                            name == null ? "أسم المستخدم" :name,
+                            name == null ? "أسم المستخدم" : name,
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           )),
                     ),
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.lightBlue[900],
-                ),
+                    color: Colors.lightBlue[900],
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/placeholder.png")
+                        ,fit: BoxFit.contain),),
               ),
             ),
             Directionality(

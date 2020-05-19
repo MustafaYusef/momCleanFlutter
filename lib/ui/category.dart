@@ -43,6 +43,7 @@ class _categotyState extends State<categoty> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         endDrawer: drawar(index: 3),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(45.0),
