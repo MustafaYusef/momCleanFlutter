@@ -171,7 +171,8 @@ class _MainScreenState extends State<MainScreen> {
 //   statusBarColor: Colors.blue,
 //   systemNavigationBarColor :Colors.white //Colorsor set color with: Color(0xFF0000FF)
 // ));
-    OneSignal.shared.init("5f0a5368-692a-48b4-8420-95fae35c1ef6", iOSSettings: {
+    OneSignal.shared.init("5f0a5368-692a-48b4-8420-95fae35c1ef6", 
+    iOSSettings: {
       OSiOSSettings.autoPrompt: true,
       OSiOSSettings.inAppLaunchUrl: true
     });

@@ -36,7 +36,6 @@ class _latestOrderState extends State<latestOrder> {
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.grey[600])),
                             // Container(
-                            
                             //   margin: EdgeInsets.only(
                             //       top: 10, bottom: 10, left: 20, right: 20),
                             //   width: MediaQuery.of(context).size.width,

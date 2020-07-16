@@ -467,7 +467,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: Colors.transparent,
                           decorationColor: Colors.transparent),
                       prefixIcon: const Icon(Icons.person),
-                      helperText: "يرجى ادخال السم الكامل",
+                      helperText: "يرجى ادخال الأسم الكامل",
                       contentPadding: EdgeInsets.only(
                           left: 6, right: 6, top: 0, bottom: 15),
                       fillColor: Colors.white70),

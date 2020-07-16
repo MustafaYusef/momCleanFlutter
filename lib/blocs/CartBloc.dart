@@ -23,7 +23,12 @@ class AddItemToCart extends CartEvent {
   BuildContext context;
   int status; // check if just wash or drywach or both (1,2,3)
 //wash or dry and wash
-  AddItemToCart({this.item_id, this.countWach, this.countdryWash, this.status,this.context});
+  AddItemToCart(
+      {this.item_id,
+      this.countWach,
+      this.countdryWash,
+      this.status,
+      this.context});
 
   @override
   List<Object> get props => [item_id, countWach, countdryWash, status];
@@ -92,47 +97,46 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       var token = await prefs.getString('token');
       try {
         yield CartAddLoading();
-       String msg;
+        String msg;
         if (event.status == 1) {
           final cart1 = await Repo.addItemToCart(
               token, event.item_id, event.countWach, "wash");
-              print("status code "+cart1.toString());
-              if(cart1==200){
-                msg="تم تحديث العنصر بنجاح";
-              }else{
-                msg="تم أضافة العنصر بنجاح";
-              }
+          print("status code " + cart1.toString());
+          if (cart1 == 200) {
+            msg = "تم تحديث العنصر بنجاح";
+          } else {
+            msg = "تم أضافة العنصر بنجاح";
+          }
         } else if (event.status == 2) {
           final cart2 = await Repo.addItemToCart(
               token, event.item_id, event.countdryWash, "dry and wash");
-              print("status code "+cart2.toString());
-               if(cart2==200){
-                msg="تم تحديث العنصر بنجاح";
-              }else{
-                msg="تم أضافة العنصر بنجاح";
-              }
+          print("status code " + cart2.toString());
+          if (cart2 == 200) {
+            msg = "تم تحديث العنصر بنجاح";
+          } else {
+            msg = "تم أضافة العنصر بنجاح";
+          }
         } else {
           final cart = await Repo.addItemToCart(
               token, event.item_id, event.countWach, "wash");
           final cart22 = await Repo.addItemToCart(
               token, event.item_id, event.countdryWash, "dry and wash");
-        print("status code "+cart.toString());
-        if(cart==200){
-                msg="تم تحديث العنصر بنجاح";
-              }else{
-                msg="تم أضافة العنصر بنجاح";
-              }
+          print("status code " + cart.toString());
+          if (cart == 200) {
+            msg = "تم تحديث العنصر بنجاح";
+          } else {
+            msg = "تم أضافة العنصر بنجاح";
+          }
         }
-       
+
         final notifAndCartNum = await Repo.getNotifcAndCart(token);
 
         await prefs.setInt(
             "notification", notifAndCartNum.data.statistics.notifications);
         await prefs.setInt("cart", notifAndCartNum.data.statistics.cart);
 
-Toast.show(msg, event.context,
-                                  duration: Toast.LENGTH_LONG,
-                                  gravity: Toast.BOTTOM);
+        Toast.show(msg, event.context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
 
         yield ItemAddedSuccusfully();
         return;
@@ -169,7 +173,7 @@ Toast.show(msg, event.context,
         yield CartLoading();
 
         final cart = await Repo.deleteItemFromCart(token, event.item_id);
-          final notifAndCartNum = await Repo.getNotifcAndCart(token);
+        final notifAndCartNum = await Repo.getNotifcAndCart(token);
 
         await prefs.setInt(
             "notification", notifAndCartNum.data.statistics.notifications);
