@@ -20,7 +20,8 @@ class _signUpState extends State<signUp> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(children:<Widget>[
+    return new 
+    Column(children:<Widget>[
     Directionality(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

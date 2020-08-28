@@ -42,7 +42,7 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       endDrawer: drawar(
         index: 6,
       ),
@@ -52,14 +52,14 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
           iconTheme: IconThemeData(
             color: Theme.of(context).primaryColor, //change your color here
           ),
-          backgroundColor: Colors.grey[200],
+          backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
             child: Text(
               "طلبات الأشتراك بالباقات",
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              style: TextStyle(fontSize: 20, color: Colors.black),
             ),
           ),
         ),
@@ -120,12 +120,14 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
                                           onTap: () {
                                             Navigator.push(context,
                                                 MaterialPageRoute(builder: (_) {
-                                              return packageDetails(state
-                                                  .requests
-                                                  .data
-                                                  .myRequest[index]
-                                                  .package
-                                                  .id,true);
+                                              return packageDetails(
+                                                  state
+                                                      .requests
+                                                      .data
+                                                      .myRequest[index]
+                                                      .package
+                                                      .id,
+                                                  true);
                                             }));
                                           },
                                           child: packageCard(state
@@ -162,16 +164,16 @@ class _MyRequestScreenState extends State<MyRequestScreen> {
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child:CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,
-                  height: 240,
-                  imageUrl: baseUrlImage + pack.package.file,
-                  placeholder: (context, url) =>
-                      Image.asset("assets/images/placeholder.png"),
-                  errorWidget: (context, url, error) =>
-                      Image.asset("assets/images/placeholder.png"),
-                ),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: 240,
+                imageUrl: baseUrlImage + pack.package.file,
+                placeholder: (context, url) =>
+                    Image.asset("assets/images/placeholder.png"),
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/placeholder.png"),
+              ),
             ),
             Container(
               height: 240,

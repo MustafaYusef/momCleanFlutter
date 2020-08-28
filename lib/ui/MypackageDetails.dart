@@ -9,6 +9,7 @@ import 'package:mom_clean/ui/MyCartScreen.dart';
 import 'package:mom_clean/ui/category.dart';
 import 'package:mom_clean/ui/mapScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 import 'MypackageScreen.dart';
 import 'custumWidget/customDrawer.dart';
@@ -32,43 +33,48 @@ class _MypackageDetailsState extends State<MypackageDetails> {
 
   int count = 0;
 
- int notifNum=0;
-  int cartNum=0;
+  int notifNum = 0;
+  int cartNum = 0;
 
-@override
-   initState()  {
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         endDrawer: drawar(index: 4,),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
-        child: AppBar(
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor, //change your color here
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Text("باقاتي",style: TextStyle(fontSize: 20,color: Colors.black),),
-          ),
-          
+        backgroundColor: Colors.white,
+        endDrawer: drawar(
+          index: 4,
         ),
-      ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(45.0),
+          child: AppBar(
+            iconTheme: IconThemeData(
+              color: Theme.of(context).primaryColor, //change your color here
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            title: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text(
+                "باقاتي",
+                style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+          ),
+        ),
         body: BlocProvider(create: (context) {
           return PackageBloc(Repo: MainRepastory())
             ..add(FetchMyPackageDetails(widget.id));
@@ -197,6 +203,10 @@ class _MypackageDetailsState extends State<MypackageDetails> {
                                 return MapScreen(widget.id, itemsIdTemp,
                                     countsTemp, NewcountsTemp, sum);
                               }));
+                            } else {
+                              Toast.show("يجب تحديد عدد ", context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.BOTTOM);
                             }
 
                             // print(Newcounts);
@@ -261,14 +271,14 @@ class _MypackageDetailsState extends State<MypackageDetails> {
                     child: Container(
                         width: 130,
                         height: double.infinity,
-                        child:  CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: baseUrlImage + item.item.photo,
-                            placeholder: (context, url) =>
-                                Image.asset("assets/images/placeholder.png"),
-                            errorWidget: (context, url, error) =>
-                                Image.asset("assets/images/placeholder.png"),
-                          ))),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: baseUrlImage + item.item.photo,
+                          placeholder: (context, url) =>
+                              Image.asset("assets/images/placeholder.png"),
+                          errorWidget: (context, url, error) =>
+                              Image.asset("assets/images/placeholder.png"),
+                        ))),
               ),
               Positioned(
                 width: 45,

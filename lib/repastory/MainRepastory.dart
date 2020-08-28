@@ -21,7 +21,7 @@ import 'package:mom_clean/models/packagesRes.dart';
 import 'package:mom_clean/models/signUpRes.dart';
 
 class MainRepastory{
-  final baseUrl="https://maamclean.com/";
+  final baseUrl="https://api.maamclean.com/";
 
   Future<categoryRes> getCategory() async {
     final response = await get(

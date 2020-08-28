@@ -65,27 +65,31 @@ class _drawarState extends State<drawar> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(
-                          image == null ? " " : baseUrlImage + image),
-                    ),
+                    // CircleAvatar(
+                    //   radius: 40,
+                    //   backgroundImage: NetworkImage(
+                    //       image == null ? " " : baseUrlImage + image),
+                    // ),
                     Container(
                       margin: EdgeInsets.only(right: 5, top: 5),
                       child: Directionality(
                           textDirection: TextDirection.rtl,
                           child: Text(
                             name == null ? "أسم المستخدم" : name,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           )),
                     ),
                   ],
                 ),
                 decoration: BoxDecoration(
-                    color: Colors.lightBlue[900],
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/placeholder.png")
-                        ,fit: BoxFit.contain),),
+                  color: Colors.lightBlue[900],
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/placeholder.png"),
+                      fit: BoxFit.contain),
+                ),
               ),
             ),
             Directionality(
@@ -143,15 +147,19 @@ class _drawarState extends State<drawar> {
                 },
                 selected: widget.index == 1 ? true : false,
                 title: Text("الأشعارات", style: TextStyle(fontSize: 16)),
-                leading: Badge(
-                    badgeContent: Text(
-                      notifNum == 0 || notifNum == null
-                          ? ""
-                          : notifNum.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                    badgeColor: Colors.deepOrange,
-                    child: Icon(Icons.notifications)),
+                leading: Container(
+                  child: notifNum == 0 || notifNum == null
+                      ? Icon(Icons.notifications)
+                      : Badge(
+                          badgeContent: Text(
+                            notifNum == 0 || notifNum == null
+                                ? ""
+                                : notifNum.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                          badgeColor: Colors.deepOrange,
+                          child: Icon(Icons.notifications)),
+                ),
               ),
             ),
             Directionality(
@@ -294,13 +302,19 @@ class _drawarState extends State<drawar> {
                 },
                 selected: widget.index == 7 ? true : false,
                 title: Text("سلة المشتريات", style: TextStyle(fontSize: 16)),
-                leading: Badge(
-                    badgeContent: Text(
-                      cartNum == 0 || cartNum == null ? "" : cartNum.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                    badgeColor: Colors.deepOrange,
-                    child: Icon(Icons.shopping_cart)),
+                leading: Container(
+                  child: cartNum == 0 || cartNum == null
+                      ? Icon(Icons.shopping_cart)
+                      : Badge(
+                          badgeContent: Text(
+                            cartNum == 0 || cartNum == null
+                                ? ""
+                                : cartNum.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                          badgeColor: Colors.deepOrange,
+                          child: Icon(Icons.shopping_cart)),
+                ),
               ),
             ),
             Directionality(

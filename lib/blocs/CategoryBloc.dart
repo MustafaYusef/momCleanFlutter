@@ -100,7 +100,7 @@ class CategoryItemsLoaded extends CategoryState {
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final MainRepastory Repo;
 
-  CategoryBloc({@required this.Repo});
+  CategoryBloc({@required this.Repo}) : super(CategoryLoading());
 
   @override
   // TODO: implement initialState

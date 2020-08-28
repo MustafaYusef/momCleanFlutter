@@ -148,7 +148,7 @@ final packagesRes packages;
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final MainRepastory Repo;
 
-  HomeBloc({@required this.Repo});
+  HomeBloc({@required this.Repo}) : super(HomeLoading());
   
   @override
   // TODO: implement initialState

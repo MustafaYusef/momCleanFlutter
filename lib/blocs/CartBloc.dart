@@ -83,7 +83,7 @@ class CartItemDeleted extends CartState {}
 class CartBloc extends Bloc<CartEvent, CartState> {
   final MainRepastory Repo;
 
-  CartBloc({@required this.Repo});
+  CartBloc({@required this.Repo}) : super(CartUninitial());
 
   @override
   // TODO: implement initialState

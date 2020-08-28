@@ -75,7 +75,7 @@ class NotificationDeleted extends NotificationState {
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final MainRepastory Repo;
 
-  NotificationBloc({@required this.Repo});
+  NotificationBloc({@required this.Repo}) : super(NotificationLoading());
   
   @override
   // TODO: implement initialState

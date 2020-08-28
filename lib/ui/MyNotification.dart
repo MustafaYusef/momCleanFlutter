@@ -49,6 +49,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         endDrawer: drawar(index: 1),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(45.0),
@@ -79,10 +80,14 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                 child: Center(child: circularProgress()));
           }
           if (state is NotificationLoaded) {
-            if(state.notification.data.myNotifications.isEmpty){
-             return Container(
-                height: MediaQuery.of(context).size.height,
-                child: Center(child:Text("لا يوجد اشعارات",style: TextStyle(fontSize: 18),))); 
+            if (state.notification.data.myNotifications.isEmpty) {
+              return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                      child: Text(
+                    "لا يوجد اشعارات",
+                    style: TextStyle(fontSize: 18),
+                  )));
             }
             return Container(
               child: Column(
@@ -224,7 +229,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                     onTap: () {
-                                      showAlert(context1,myNotification.id);
+                                      showAlert(context1, myNotification.id);
                                       // showDialog(
                                       //     context: context1,
                                       //     builder: (BuildContext context) {
@@ -251,7 +256,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
     );
   }
 
-  showAlert(BuildContext context1,int id) {
+  showAlert(BuildContext context1, int id) {
     var alertStyle = AlertStyle(
       animationType: AnimationType.fromBottom,
       isCloseButton: true,
@@ -265,7 +270,7 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
         ),
       ),
       titleStyle: TextStyle(
-        color:Colors.red,
+        color: Colors.red,
       ),
     );
     Alert(
@@ -275,13 +280,13 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
       desc: "",
       style: alertStyle,
       buttons: [
-          DialogButton(
+        DialogButton(
           child: Text(
             "خروج",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () => Navigator.pop(context),
-            color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColor,
           // gradient: LinearGradient(colors: [
           //   Color.fromRGBO(116, 116, 191, 1.0),
           //   Color.fromRGBO(52, 138, 199, 1.0)
@@ -293,22 +298,20 @@ class _MyNotificationScreenState extends State<MyNotificationScreen> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () async {
-          
             // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
             //   return OrderScreen();
             // }));
-              Navigator.pop(context1);
-                      await BlocProvider.of<NotificationBloc>(context1)
-                          .add(CancelNotification(id));
+            Navigator.pop(context1);
+            await BlocProvider.of<NotificationBloc>(context1)
+                .add(CancelNotification(id));
 
-                      Toast.show("تم حذف الأشعار بنجاح", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                      BlocProvider.of<NotificationBloc>(context1)
-                          .add(FetchNotification());
+            Toast.show("تم حذف الأشعار بنجاح", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            BlocProvider.of<NotificationBloc>(context1)
+                .add(FetchNotification());
           },
-          color:  Colors.red,
+          color: Colors.red,
         ),
-      
       ],
     ).show();
   }

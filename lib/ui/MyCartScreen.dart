@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mom_clean/blocs/CartBloc.dart';
 import 'package:mom_clean/models/cartRes.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
@@ -80,13 +81,32 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       child: ListView.builder(
                         itemCount: state.cart.data.myCart.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Dismissible(
+                          return Slidable(
                             child: buildCardOnce(state.cart.data.myCart[index]),
-                            key: Key(index.toString()),
-                            onDismissed: (direction) {
-                              showAlert(
-                                  context, state.cart.data.myCart[index].id);
-                            },
+                            actions: <Widget>[
+                              IconSlideAction(
+                                caption: 'حذف',
+                                color: Colors.red,
+                                icon: Icons.delete,
+                                onTap: () async {
+                                  showAlert(context,
+                                      state.cart.data.myCart[index].id);
+                                },
+                              ),
+                            ],
+                            secondaryActions: <Widget>[
+                              IconSlideAction(
+                                caption: 'حذف',
+                                color: Colors.red,
+                                icon: Icons.delete,
+                                onTap: () {
+                                  showAlert(context,
+                                      state.cart.data.myCart[index].id);
+                                },
+                              ),
+                            ],
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.35,
                           );
                         },
                       ),

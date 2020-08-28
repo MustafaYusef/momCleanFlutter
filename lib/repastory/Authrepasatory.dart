@@ -13,7 +13,7 @@ import 'package:mom_clean/models/signUpRes.dart';
 
 
 class AuthRepastory{
-  final baseUrl="https://maamclean.com/";
+  final baseUrl="https://api.maamclean.com/";
 
   Future<CityRes> getCity() async {
     final response = await get(

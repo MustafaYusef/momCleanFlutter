@@ -41,6 +41,7 @@ class _MypackageScreenState extends State<MypackageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       endDrawer: drawar(
         index: 4,
       ),
@@ -50,7 +51,7 @@ class _MypackageScreenState extends State<MypackageScreen> {
           iconTheme: IconThemeData(
             color: Theme.of(context).primaryColor, //change your color here
           ),
-          backgroundColor: Colors.grey[200],
+          backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           title: Directionality(
@@ -62,7 +63,6 @@ class _MypackageScreenState extends State<MypackageScreen> {
           ),
         ),
       ),
-      backgroundColor: Colors.grey[200],
       body: Builder(builder: (cont) {
         return SafeArea(
           child: Column(

@@ -59,7 +59,7 @@ class ProfileLoaded extends ProfileState {
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final AuthRepastory Repo;
 
-  ProfileBloc({@required this.Repo});
+  ProfileBloc({@required this.Repo}) : super(ProfileUninitialized());
   
   @override
   // TODO: implement initialState

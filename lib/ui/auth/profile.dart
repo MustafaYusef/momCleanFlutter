@@ -202,30 +202,30 @@ class buildProfileBody extends StatelessWidget {
               // ),
               InkWell(
                 onTap: () {
-                  showGeneralDialog(
-                    context: context,
-                    barrierColor:
-                        Colors.black12.withOpacity(0.6), // background color
-                    barrierDismissible:
-                        false, // should dialog be dismissed when tapped outside
-                    barrierLabel: "Dialog", // label for barrier
-                    transitionDuration: Duration(
-                        milliseconds:
-                            400), // how long it takes to popup dialog after button click
-                    pageBuilder: (_, __, ___) {
-                      // your widget implementation
-                      return SizedBox.expand(
-                        // makes widget fullscreen
-                        child: FadeInImage(
-                          placeholder:
-                              AssetImage("assets/images/placeholder.png"),
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              baseUrlImage + data.data.profile.photo),
-                        ),
-                      );
-                    },
-                  );
+                  // showGeneralDialog(
+                  //   context: context,
+                  //   barrierColor:
+                  //       Colors.black12.withOpacity(0.6), // background color
+                  //   barrierDismissible:
+                  //       false, // should dialog be dismissed when tapped outside
+                  //   barrierLabel: "Dialog", // label for barrier
+                  //   transitionDuration: Duration(
+                  //       milliseconds:
+                  //           400), // how long it takes to popup dialog after button click
+                  //   pageBuilder: (_, __, ___) {
+                  //     // your widget implementation
+                  //     return SizedBox.expand(
+                  //       // makes widget fullscreen
+                  //       child: FadeInImage(
+                  //         placeholder:
+                  //             AssetImage("assets/images/placeholder.png"),
+                  //         fit: BoxFit.cover,
+                  //         image: NetworkImage(
+                  //             baseUrlImage + data.data.profile.photo),
+                  //       ),
+                  //     );
+                  //   },
+                  // );
                 },
                 child: Container(
                   decoration: BoxDecoration(

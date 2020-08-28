@@ -19,49 +19,50 @@ class packageScreen extends StatefulWidget {
 }
 
 class _packageScreenState extends State<packageScreen> {
-    int notifNum=0;
-  int cartNum=0;
+  int notifNum = 0;
+  int cartNum = 0;
 
-@override
-   initState()  {
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       endDrawer: drawar(index: 2),
+      backgroundColor: Colors.white,
+      endDrawer: drawar(index: 2),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
+          backgroundColor: Colors.white,
           iconTheme: IconThemeData(
             color: Theme.of(context).primaryColor, //change your color here
           ),
-          backgroundColor: Colors.grey[200],
           elevation: 0,
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("الأشتراكات",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "الأشتراكات",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
-      backgroundColor: Colors.grey[200],
-     
       body: Builder(builder: (cont) {
         return SafeArea(
           child: Column(
             children: <Widget>[
-              
               Expanded(
                 child: BlocProvider(
                   create: (context) {
@@ -77,62 +78,82 @@ class _packageScreenState extends State<packageScreen> {
                       );
                     }
                     if (state is AllPackagesLoaded) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 10, bottom: 5),
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Directionality(
-                                        child: Text(
-                                          "أحدث الباقات",
-                                          style: TextStyle(
-                                              fontSize: 26,
-                                              color: Colors.grey[800]),
+                      if (state.packages.data.packages.length == 0) {
+                        return Center(
+                          child: Container(
+                              child: Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(
+                                    "لا يوجد باقات",
+                                    style: TextStyle(fontSize: 24),
+                                  ))),
+                        );
+                      } else {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(right: 10, bottom: 5),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Directionality(
+                                          child: Text(
+                                            "أحدث الباقات",
+                                            style: TextStyle(
+                                                fontSize: 26,
+                                                color: Colors.grey[800]),
+                                          ),
+                                          textDirection: TextDirection.rtl,
                                         ),
-                                        textDirection: TextDirection.rtl,
-                                      ),
-                                      Directionality(
-                                        child: Text(
-                                          "تكدر تشترك بالباقة اللي تناسبك",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.grey[600]),
+                                        Directionality(
+                                          child: Text(
+                                            "تكدر تشترك بالباقة اللي تناسبك",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey[600]),
+                                          ),
+                                          textDirection: TextDirection.rtl,
                                         ),
-                                        textDirection: TextDirection.rtl,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      itemCount: 5,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(builder: (_) {
-                                              return packageDetails(state.packages.data.packages[index].id);
-                                            }));
-                                          },
-                                          child: packageCard(state
-                                              .packages.data.packages[index]),
-                                        );
-                                      },
-                                    )),
-                              ]),
-                        ),
-                      );
+                                  Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount:
+                                            state.packages.data.packages.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) {
+                                                return packageDetails(state
+                                                    .packages
+                                                    .data
+                                                    .packages[index]
+                                                    .id);
+                                              }));
+                                            },
+                                            child: packageCard(state
+                                                .packages.data.packages[index]),
+                                          );
+                                        },
+                                      )),
+                                ]),
+                          ),
+                        );
+                      }
                     }
                     if (state is HomeNetworkError) {
                       return networkErrorHome("لا يوجد اتصال");
@@ -157,19 +178,17 @@ class _packageScreenState extends State<packageScreen> {
         child: Stack(
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child:CachedNetworkImage(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
                   fit: BoxFit.cover,
-               width: MediaQuery.of(context).size.width,
-                height: 240,
-                  imageUrl: baseUrlImage +pack.file,
+                  width: MediaQuery.of(context).size.width,
+                  height: 240,
+                  imageUrl: baseUrlImage + pack.file,
                   placeholder: (context, url) =>
                       Image.asset("assets/images/placeholder.png"),
                   errorWidget: (context, url, error) =>
                       Image.asset("assets/images/placeholder.png"),
-                )
-              
-            ),
+                )),
             Container(
               height: 240,
               padding: EdgeInsets.only(right: 10, bottom: 10),

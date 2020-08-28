@@ -1,4 +1,4 @@
-package com.croczi.mom_clean
+package com.croczi.mamaclean
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

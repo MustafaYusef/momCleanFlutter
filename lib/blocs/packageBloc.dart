@@ -98,7 +98,7 @@ class PackageBuySuccessfully extends PackageState {
 class PackageBloc extends Bloc<PackageEvent, PackageState> {
   final MainRepastory Repo;
 
-  PackageBloc({@required this.Repo});
+  PackageBloc({@required this.Repo}) : super(PackageLoading());
 
   @override
   // TODO: implement initialState

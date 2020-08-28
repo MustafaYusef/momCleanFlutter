@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,60 +9,63 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'custumWidget/customDrawer.dart';
 import 'custumWidget/custumAppBar.dart';
 import 'custumWidget/latestOrder.dart';
+
 class OrderScreen extends StatefulWidget {
   @override
   _OrderScreenState createState() => new _OrderScreenState();
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-      int notifNum=0;
-  int cartNum=0;
+  int notifNum = 0;
+  int cartNum = 0;
 
-@override
-   initState()  {
+  @override
+  initState() {
     super.initState();
-     getNum();
+    getNum();
   }
-     getNum() async{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        setState(() {
-          notifNum =  prefs.getInt('notification');
-     cartNum =  prefs.getInt('cart');
-        });
-     
- }
+
+  getNum() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notifNum = prefs.getInt('notification');
+      cartNum = prefs.getInt('cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-     endDrawer: drawar(index: 5),
+      backgroundColor: Colors.white,
+      endDrawer: drawar(index: 5),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45.0),
         child: AppBar(
+          backgroundColor: Colors.white,
           iconTheme: IconThemeData(
             color: Theme.of(context).primaryColor, //change your color here
           ),
-          backgroundColor: Colors.grey[200],
           elevation: 0,
           centerTitle: true,
           title: Directionality(
             textDirection: TextDirection.rtl,
-            child: Text("الطلبات السابقة",style: TextStyle(fontSize: 20,color: Colors.black),),
+            child: Text(
+              "الطلبات السابقة",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
           ),
-          
         ),
       ),
       body: Builder(builder: (cont) {
         return Column(
           children: <Widget>[
-           
             Expanded(
               child: BlocProvider(
                 create: (context) {
                   return HomeBloc(Repo: MainRepastory())..add(FetchAllOrders());
                 },
-                child: BlocBuilder<HomeBloc, HomeState>(
-                    builder: (context, state) {
+                child:
+                    BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
                   if (state is HomeLoading) {
                     return Center(
                       child: Container(
@@ -78,8 +80,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Container(
-                                margin:
-                                    EdgeInsets.only(right: 10, bottom: 5),
+                                margin: EdgeInsets.only(right: 10, bottom: 5),
                                 width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -93,13 +94,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                       ),
                                       textDirection: TextDirection.rtl,
                                     ),
-                                
                                   ],
                                 ),
                               ),
-                           
-                             
-                              
                               latestOrder(state.orders)
                             ]),
                       ),
@@ -120,6 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 }
+
 class networkErrorHome extends StatelessWidget {
   String msg;
   networkErrorHome(

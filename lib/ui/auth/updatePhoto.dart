@@ -22,7 +22,7 @@ class _ImageInput extends State<ImageInput> {
   File _imageFile;
   // To track the file uploading state
   bool _isUploading = false;
-  String baseUrl = 'https://maamclean.com/auth/photo';
+  String baseUrl = 'https://api.maamclean.com/auth/photo';
 
   void _getImage(BuildContext context, ImageSource source) async {
     File image = await ImagePicker.pickImage(source: source);
@@ -53,25 +53,23 @@ class _ImageInput extends State<ImageInput> {
 
     //imageUploadRequest.fields['ext'] = mimeTypeData[1];
     imageUploadRequest.files.add(file);
-    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-          var token= await prefs.getString('token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString('token');
     imageUploadRequest.headers.addAll({
-      "Authorization":token,"Content-Type":"application/x-www-form-urlencoded"
+      "Authorization": token,
+      "Content-Type": "application/x-www-form-urlencoded"
     });
     try {
       final streamedResponse = await imageUploadRequest.send();
       final response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 200 ||response.statusCode == 201)
-       {
-          final Map<String, dynamic> responseData = json.decode(response.body);
-          print(responseData);
-       return true;
-      }else{
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        print(responseData);
+        return true;
+      } else {
         return false;
       }
       print("response " + response.body);
-
     } catch (e) {
       print(e);
       return false;
@@ -85,12 +83,12 @@ class _ImageInput extends State<ImageInput> {
     if (response) {
       Toast.show("تم تحديث الصورة بنجاح", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-                      return ProfileScreen();
-                    }));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+        return ProfileScreen();
+      }));
     } else {
       _resetState();
-     Toast.show("فشل في الأرسال", context,
+      Toast.show("فشل في الأرسال", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
@@ -164,20 +162,22 @@ class _ImageInput extends State<ImageInput> {
     if (_isUploading) {
       // File is being uploaded then show a progress indicator
       btnWidget = Container(
-          margin: EdgeInsets.only(top: 10.0),
-          child: circularProgress());
+          margin: EdgeInsets.only(top: 10.0), child: circularProgress());
     } else if (!_isUploading && _imageFile != null) {
       // If image is picked by the user then show a upload btn
       btnWidget = Container(
         margin: EdgeInsets.only(top: 10.0),
         child: RaisedButton(
-          
-          child: Directionality(textDirection: TextDirection.rtl,
-            child: Text('أرسال',style: TextStyle(fontSize: 18),)),
+          child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text(
+                'أرسال',
+                style: TextStyle(fontSize: 18),
+              )),
           onPressed: () {
             _startUploading();
           },
-          color:Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColor,
           textColor: Colors.white,
         ),
       );
@@ -188,7 +188,7 @@ class _ImageInput extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       endDrawer: drawar(index: 8),
+      endDrawer: drawar(index: 8),
       appBar: AppBar(
         centerTitle: true,
         title: Directionality(
@@ -199,8 +199,6 @@ class _ImageInput extends State<ImageInput> {
           ),
         ),
       ),
-     
-    
       body: Column(
         children: <Widget>[
           Padding(

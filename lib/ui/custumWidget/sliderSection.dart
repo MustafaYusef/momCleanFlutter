@@ -30,7 +30,7 @@ class _sliderSectionState extends State<sliderSection> {
     return Container(
       child: Stack(children: <Widget>[
         CarouselSlider.builder(
-          itemCount: widget.packages.length,
+          itemCount: widget.packages.length == 0 ? 1 : widget.packages.length,
           height: 225,
           viewportFraction: 1.0,
           enableInfiniteScroll: true,
@@ -51,9 +51,11 @@ class _sliderSectionState extends State<sliderSection> {
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return packageDetails(widget.packages[itemIndex].id);
-                }));
+                if (widget.packages.length != 0) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return packageDetails(widget.packages[itemIndex].id);
+                  }));
+                }
               },
               child: Container(
                   margin: EdgeInsets.only(left: 5, right: 5),
@@ -66,9 +68,9 @@ class _sliderSectionState extends State<sliderSection> {
                           fit: BoxFit.cover,
                           width: MediaQuery.of(context).size.width,
                           height: 240,
-                          
-                          imageUrl:
-                              baseUrlImage + widget.packages[itemIndex].file,
+                          imageUrl: widget.packages.length == 0
+                              ? "kdj"
+                              : baseUrlImage + widget.packages[itemIndex].file,
                           placeholder: (context, url) =>
                               Image.asset("assets/images/placeholder.png"),
                           errorWidget: (context, url, error) =>
@@ -98,7 +100,9 @@ class _sliderSectionState extends State<sliderSection> {
                               padding: EdgeInsets.all(5),
                               child: Directionality(
                                 child: Text(
-                                  widget.packages[itemIndex].nameAr,
+                                  widget.packages.length == 0
+                                      ? "لا يوجد باقات"
+                                      : widget.packages[itemIndex].nameAr,
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.white),
                                 ),
@@ -107,7 +111,10 @@ class _sliderSectionState extends State<sliderSection> {
                             ),
                             Directionality(
                               child: Text(
-                                  widget.packages[itemIndex].descriptionAr,
+                                  widget.packages.length == 0
+                                      ? ""
+                                      : widget
+                                          .packages[itemIndex].descriptionAr,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(

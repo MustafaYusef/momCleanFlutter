@@ -76,7 +76,7 @@ class OrdersNetworkError extends OrdersState {}
 class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   final MainRepastory Repo;
 
-  OrdersBloc({@required this.Repo});
+  OrdersBloc({@required this.Repo}) : super(OrdersLoading());
 
   @override
   // TODO: implement initialState

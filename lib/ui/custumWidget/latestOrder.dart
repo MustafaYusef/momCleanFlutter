@@ -15,9 +15,6 @@ class latestOrder extends StatefulWidget {
 }
 
 class _latestOrderState extends State<latestOrder> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -148,7 +145,9 @@ class orderListCard extends StatelessWidget {
                             color: getListColor(myorder.status)[0]),
                       ),
                       Text("الحالة:${getStatus(myorder.status)}"),
-                      Text(myorder.type=="items"?"النوع: أعتيادي":"النوع: باقة")
+                      Text(myorder.type == "items"
+                          ? "النوع: أعتيادي"
+                          : "النوع: باقة")
                     ],
                   ),
                 ),
@@ -160,7 +159,8 @@ class orderListCard extends StatelessWidget {
                     splashColor: Colors.grey[500],
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return OrderDetailsScreen(myorder.id, myorder.type,myorder.status);
+                        return OrderDetailsScreen(
+                            myorder.id, myorder.type, myorder.status);
                       }));
                     },
                     child: Row(
@@ -197,7 +197,9 @@ class orderListCard extends StatelessWidget {
       return [cancelDark, cancelLight];
     } else if (status == "cleaning") {
       return [inProgressDark, inProgressLight];
-    } else if (status == "accepted") {
+    } else if (status == "driver_clinet") {
+      return [acceptedDark, acceptedLight];
+    } else {
       return [acceptedDark, acceptedLight];
     }
   }
@@ -213,8 +215,10 @@ class orderListCard extends StatelessWidget {
       return "ملغي";
     } else if (status == "cleaning") {
       return "قيد التحضير";
-    } else if (status == "accepted") {
+    } else if (status == "driver_clinet") {
       return "تم قبول الطلب";
+    } else {
+      return "أخرى";
     }
   }
 }

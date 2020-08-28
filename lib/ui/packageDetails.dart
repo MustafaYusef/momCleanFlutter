@@ -18,7 +18,7 @@ import 'custumWidget/customDrawer.dart';
 class packageDetails extends StatefulWidget {
   int id;
   bool flage;
-  packageDetails(this.id,[this.flage]);
+  packageDetails(this.id, [this.flage]);
 
   @override
   _packageDetailsState createState() => new _packageDetailsState();
@@ -45,6 +45,7 @@ class _packageDetailsState extends State<packageDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         endDrawer: drawar(index: 2),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(45.0),
@@ -115,41 +116,43 @@ class _packageDetailsState extends State<packageDetails> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(0.0),
-                  child:widget.flage!=null?Container(): Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    margin:
-                        EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColor,
-                        elevation: 5,
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Text("أشترك هسة",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                  child: widget.flage != null
+                      ? Container()
+                      : Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          margin: EdgeInsets.only(
+                              top: 10, bottom: 10, left: 20, right: 20),
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: RaisedButton(
+                              color: Theme.of(context).primaryColor,
+                              elevation: 5,
+                              child: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text("أشترك هسة",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20)),
+                              ),
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                String token = await prefs.getString('token');
+                                if (token == null || token == "") {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return LoginScreen();
+                                  }));
+                                } else {
+                                  showAlert(context1, token, widget.id);
+                                }
+                              },
+                            ),
+                          ),
                         ),
-                        onPressed: () async {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          String token = await prefs.getString('token');
-                          if (token == null || token == "") {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (_) {
-                              return LoginScreen();
-                            }));
-                          } else {
-                            showAlert(context1, token, widget.id);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
                 ),
               ],
             );
@@ -168,7 +171,11 @@ class _packageDetailsState extends State<packageDetails> {
                   SizedBox(
                     height: 40,
                   ),
-                  Icon(Icons.info_outline,size: 150,color: Theme.of(context).primaryColor,),
+                  Icon(
+                    Icons.info_outline,
+                    size: 150,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   Text(
                     state.msg,
                     style: TextStyle(fontSize: 18),
@@ -213,10 +220,7 @@ class _packageDetailsState extends State<packageDetails> {
             return networkError("لا يوجد اتصال بالشبكة");
           }
           if (state is PackageError) {
-           
-               return networkErrorPack(widget.id);
-            
-            
+            return networkErrorPack(widget.id);
           }
         })));
   }
@@ -262,15 +266,14 @@ class _packageDetailsState extends State<packageDetails> {
                     child: Container(
                         width: 130,
                         height: double.infinity,
-                        child:CachedNetworkImage(
-                  fit: BoxFit.cover,
-             
-                  imageUrl: baseUrlImage +item.item.photo,
-                  placeholder: (context, url) =>
-                      Image.asset("assets/images/placeholder.png"),
-                  errorWidget: (context, url, error) =>
-                      Image.asset("assets/images/placeholder.png"),
-                ))),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: baseUrlImage + item.item.photo,
+                          placeholder: (context, url) =>
+                              Image.asset("assets/images/placeholder.png"),
+                          errorWidget: (context, url, error) =>
+                              Image.asset("assets/images/placeholder.png"),
+                        ))),
               ),
               Positioned(
                 width: 100,
@@ -410,7 +413,7 @@ class _packageDetailsState extends State<packageDetails> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () => Navigator.pop(context),
-           color: Colors.red,
+          color: Colors.red,
           // gradient: LinearGradient(colors: [
           //   Color.fromRGBO(116, 116, 191, 1.0),
           //   Color.fromRGBO(52, 138, 199, 1.0)
@@ -427,22 +430,20 @@ class _packageDetailsState extends State<packageDetails> {
             // }));
 
             Navigator.pop(context1);
-             BlocProvider.of<PackageBloc>(context1)
+            BlocProvider.of<PackageBloc>(context1)
                 .add(BuyPackageEvent(id, token));
-
-           
           },
-        
-           color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColor,
         ),
       ],
     ).show();
   }
-  
 }
+
 class networkErrorPack extends StatelessWidget {
   final int id;
-   networkErrorPack(this.id, {
+  networkErrorPack(
+    this.id, {
     Key key,
   }) : super(key: key);
 
@@ -455,15 +456,22 @@ class networkErrorPack extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(Icons.info,size: 150,color: Theme.of(context).primaryColor,),
-          Directionality(textDirection: TextDirection.rtl,
-            child: Text("لقد قمت بطلب الشراء سابقاً",style: TextStyle(fontSize: 18),)),
+          Icon(
+            Icons.info,
+            size: 150,
+            color: Theme.of(context).primaryColor,
+          ),
+          Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text(
+                "لقد قمت بطلب الشراء سابقاً",
+                style: TextStyle(fontSize: 18),
+              )),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: EdgeInsets.only(
-                top: 10, bottom: 20, left: 60, right: 60),
+            margin: EdgeInsets.only(top: 10, bottom: 20, left: 60, right: 60),
             width: MediaQuery.of(context).size.width,
             height: 50,
             child: ClipRRect(
@@ -474,8 +482,7 @@ class networkErrorPack extends StatelessWidget {
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: Text("رجوع",
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20)),
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
                   ),
                   onPressed: () {
                     BlocProvider.of<PackageBloc>(context)
@@ -488,4 +495,3 @@ class networkErrorPack extends StatelessWidget {
     ));
   }
 }
-
