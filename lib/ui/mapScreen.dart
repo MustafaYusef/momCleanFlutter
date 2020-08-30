@@ -19,6 +19,7 @@ class MapScreen extends StatefulWidget {
   final List<String> counts;
   final List<String> newcounts;
   final int sum;
+  int numCall = 0;
   MapScreen([this.id, this.itemsId, this.counts, this.newcounts, this.sum]);
 
   @override
@@ -39,7 +40,7 @@ class MapScreenState extends State<MapScreen> {
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
   @override
-  Future<void> initState() {
+  initState() {
     // TODO: implement initState
     super.initState();
     moveCamera();
@@ -70,7 +71,9 @@ class MapScreenState extends State<MapScreen> {
           position: LatLng(lat, lon)));
     });
     getNum();
-    showAlertDragPin(context);
+    if (widget.numCall != 1) {
+      showAlertDragPin(context);
+    }
   }
 
   int notifNum = 0;
@@ -381,12 +384,13 @@ class MapScreenState extends State<MapScreen> {
       ],
     ).show();
   }
+
   showAlertDragPin(BuildContext context) {
+    widget.numCall = 1;
     var alertStyle = AlertStyle(
       animationType: AnimationType.fromBottom,
       isCloseButton: true,
       isOverlayTapDismiss: true,
-      
       descStyle: TextStyle(fontWeight: FontWeight.bold),
       animationDuration: Duration(milliseconds: 400),
       alertBorder: RoundedRectangleBorder(
@@ -402,7 +406,6 @@ class MapScreenState extends State<MapScreen> {
     Alert(
       context: context,
       type: AlertType.info,
-      
       title: "تغيير الموقع",
       desc: "اضغط مطولاً على الدبوس لتغيير موقعك",
       style: alertStyle,
@@ -414,7 +417,6 @@ class MapScreenState extends State<MapScreen> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            
           },
           color: Theme.of(context).primaryColor,
         ),
@@ -432,6 +434,7 @@ class MapScreenState extends State<MapScreen> {
       ],
     ).show();
   }
+
   // Future<void> _goToTheLake() async {
   //   final GoogleMapController controller = await _controller.future;
   //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraUpdate.newCameraPosition( CameraPosition(
