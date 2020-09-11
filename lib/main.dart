@@ -352,8 +352,8 @@ class _MainScreenState extends State<MainScreen> {
                                                           child: Row(
                                                             children: <Widget>[
                                                               Container(
-                                                                  width: 50,
-                                                                  height: 50,
+                                                                  width: 45,
+                                                                  height: 45,
                                                                   margin: EdgeInsets
                                                                       .only(
                                                                           left:
@@ -426,8 +426,8 @@ class _MainScreenState extends State<MainScreen> {
                                                           child: Row(
                                                             children: <Widget>[
                                                               Container(
-                                                                  width: 50,
-                                                                  height: 50,
+                                                                  width: 45,
+                                                                  height: 45,
                                                                   margin: EdgeInsets
                                                                       .only(
                                                                           left:
@@ -538,6 +538,9 @@ class _MainScreenState extends State<MainScreen> {
                     }
                     if (state is HomeNetworkError) {
                       return networkErrorHome("لا يوجد اتصال");
+                    }
+                    if (state is HomeLocationError) {
+                      return networkErrorHome(state.msg);
                     }
                     if (state is HomeError) {
                       return networkErrorHome(state.msg);

@@ -13,6 +13,8 @@ import 'package:mom_clean/models/profileRes.dart';
 import 'package:mom_clean/repastory/Authrepasatory.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/packageDetails.dart';
+import 'package:mom_clean/utils/locationServices.dart';
+import 'package:mom_clean/utils/userLocation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class PackageEvent extends Equatable {
@@ -109,31 +111,22 @@ class PackageBloc extends Bloc<PackageEvent, PackageState> {
     final currentState = state;
     if (event is FetchPackageDetails) {
       try {
-        Location location = new Location();
 
-        bool _serviceEnabled;
-        PermissionStatus _permissionGranted;
-        LocationData _locationData;
+  //   Location location = new Location();
+  // var _locationData = UserLocation();
+  //       var locationServeces = LocationServices();
+  //       location.requestPermission().then((granted) async {
+  //         if (granted != null) {
+  //           var loc = await locationServeces.getCurrentLocation();
+  //           if (loc != null) {
+  //             _locationData = loc;
+  //           }
+  //         }
+  //       });
 
-        _serviceEnabled = await location.serviceEnabled();
-        if (!_serviceEnabled) {
-          _serviceEnabled = await location.requestService();
-          if (!_serviceEnabled) {
-            return;
-          }
-        }
+  //       print("location     :" + _locationData.lat.toString());
 
-        _permissionGranted = await location.hasPermission();
-        if (_permissionGranted == PermissionStatus.DENIED) {
-          _permissionGranted = await location.requestPermission();
-          if (_permissionGranted != PermissionStatus.GRANTED) {
-            return;
-          }
-        }
-
-        _locationData = await location.getLocation();
-
-        print(_locationData.latitude);
+  //       print(_locationData.lat);
         yield PackageLoading();
         final package = await Repo.getPackageItems(event.id);
 

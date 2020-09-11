@@ -24,12 +24,16 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to camera.</string>
+
+
+
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open and in the background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The app needs location permissions</string>
+
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs access to microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

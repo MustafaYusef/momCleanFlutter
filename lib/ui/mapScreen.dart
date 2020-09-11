@@ -7,6 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
 import 'package:mom_clean/ui/ordersScreen.dart';
+import 'package:mom_clean/utils/locationServices.dart';
+import 'package:mom_clean/utils/userLocation.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -50,13 +52,13 @@ class MapScreenState extends State<MapScreen> {
   double lon = 0;
   List<Marker> markers = [];
   moveCamera() async {
-    LocationData loc = await getLocation();
-    lat = loc.latitude;
-    lon = loc.longitude;
+    UserLocation loc = await getLocation();
+    lat = loc.lat;
+    lon = loc.lon;
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 192.8334901395799,
-        target: LatLng(loc.latitude, loc.longitude),
+        target: LatLng(loc.lat, loc.lon),
         tilt: 59.440717697143555,
         zoom: 16.151926040649414)));
     setState(() {
@@ -443,29 +445,21 @@ class MapScreenState extends State<MapScreen> {
   //     tilt: 59.440717697143555,
   //     zoom: 19.151926040649414))));
   // }
-  Future<LocationData> getLocation() async {
+  Future<UserLocation> getLocation() async {
     Location location = new Location();
+    var _locationData = UserLocation();
+    var locationServeces = LocationServices();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return null;
+   await location.requestPermission().then((granted) async {
+      if (granted != null) {
+        var loc = await locationServeces.getCurrentLocation();
+        if (loc != null) {
+          _locationData = loc;
+        }
       }
-    }
+    });
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.DENIED) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.GRANTED) {
-        return null;
-      }
-    }
-
-    return _locationData = await location.getLocation();
+    print("location     :" + _locationData.lat.toString());
+    return _locationData;
   }
 }

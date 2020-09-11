@@ -42,6 +42,8 @@ dependencies:
   geolocator: ^5.3.0
   location: ^2.5.0
   google_maps_flutter: ^0.5.30
+  permission_handler: ^5.0.1+1
+  app_settings: ^4.0.3
   date_format: ^1.0.8
   rflutter_alert: ^1.0.3
   lottie: ^0.6.0

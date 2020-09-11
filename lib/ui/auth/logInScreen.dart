@@ -721,63 +721,68 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 40,
                   child: Container(width: 50, child: circularProgress()))
               : Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: RaisedButton(
-                color: Colors.amber[300],
-                elevation: 5,
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Text("تسجيل",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                ),
-                onPressed: () async {
-                  setState(() {
-                    isSignUpLoading=true;
-                  });
-                  if (checkSignUpValidation()) {
-                    var playerId = await getuserId();
-                    AuthRepastory repo = AuthRepastory();
-                    try {
-                      final Signup = await repo.SignUp(
-                          SignFullNameController.text,
-                          codeSign + SignPhoneController.text,
-                          SignPassController.text,
-                          CityId,
-                          playerId);
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  margin:
+                      EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: RaisedButton(
+                      color: Colors.amber[300],
+                      elevation: 5,
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Text("تسجيل",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isSignUpLoading = true;
+                        });
+                        if (checkSignUpValidation()) {
+                          var playerId = await getuserId();
+                          AuthRepastory repo = AuthRepastory();
+                          try {
+                            final Signup = await repo.SignUp(
+                                SignFullNameController.text,
+                                codeSign + SignPhoneController.text,
+                                SignPassController.text,
+                                CityId,
+                                playerId);
 
-                      //go to verifecation page
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return PinCodeVerificationScreen(
-                            codeSign + SignPhoneController.text,
-                            Signup.data.token,
-                            false);
-                      }));
-                    } on SocketException catch(_){
-                       Toast.show("لا يوجد اتصال بالشبكة", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                    }
-                     catch (e) {
-                      Toast.show("هذا الرقم مستخدم سابقاً", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                    }
-                  } else {
-                    Toast.show(signUpErrorMasseg, context,
-                        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                  }
-                  setState(() {
-                    isSignUpLoading=false;
-                  });
-                },
-              ),
-            ),
-          ),
+                            //go to verifecation page
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) {
+                              return PinCodeVerificationScreen(
+                                  codeSign + SignPhoneController.text,
+                                  Signup.data.token,
+                                  false);
+                            }));
+                          } on SocketException catch (_) {
+                            Toast.show("لا يوجد اتصال بالشبكة", context,
+                                duration: Toast.LENGTH_LONG,
+                                gravity: Toast.BOTTOM);
+                          } catch (e) {
+                            Toast.show("هذا الرقم مستخدم سابقاً", context,
+                                duration: Toast.LENGTH_LONG,
+                                gravity: Toast.BOTTOM);
+                          }
+                        } else {
+                          Toast.show(signUpErrorMasseg, context,
+                              duration: Toast.LENGTH_LONG,
+                              gravity: Toast.BOTTOM);
+                        }
+                        setState(() {
+                          isSignUpLoading = false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
         ),
       ];
     }

@@ -10,6 +10,8 @@ import 'package:mom_clean/models/categoryRes.dart';
 import 'package:mom_clean/models/profileRes.dart';
 import 'package:mom_clean/repastory/Authrepasatory.dart';
 import 'package:mom_clean/repastory/MainRepastory.dart';
+import 'package:mom_clean/utils/locationServices.dart';
+import 'package:mom_clean/utils/userLocation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class CategoryEvent extends Equatable {
@@ -112,34 +114,24 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event is FetchCategory) {
       try {
   Location location = new Location();
-
-        bool _serviceEnabled;
-        PermissionStatus _permissionGranted;
-        LocationData _locationData;
-
-        _serviceEnabled = await location.serviceEnabled();
-        if (!_serviceEnabled) {
-          _serviceEnabled = await location.requestService();
-          if (!_serviceEnabled) {
-            return;
+  var _locationData = UserLocation();
+        var locationServeces = LocationServices();
+        location.requestPermission().then((granted) async {
+          if (granted != null) {
+            var loc = await locationServeces.getCurrentLocation();
+            if (loc != null) {
+              _locationData = loc;
+            }
           }
-        }
+        });
 
-        _permissionGranted = await location.hasPermission();
-        if (_permissionGranted == PermissionStatus.DENIED) {
-          _permissionGranted = await location.requestPermission();
-          if (_permissionGranted != PermissionStatus.GRANTED) {
-            return;
-          }
-        }
-
-        _locationData = await location.getLocation();
+        print("location     :" + _locationData.lat.toString());
 
         yield CategoryLoading();
         final category = await Repo.getCategory();
         var id=event.id==-1?category.data.categories[0].id:event.id;
         final categorytems =
-            await Repo.getItemsGategore(id, _locationData.longitude, _locationData.latitude);
+            await Repo.getItemsGategore(id, _locationData.lon, _locationData.lat);
         yield CategoryLoaded(category: category,categoryItems:categorytems);
 
         return;
@@ -154,31 +146,24 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       
       Location location = new Location();
 
-        bool _serviceEnabled;
-        PermissionStatus _permissionGranted;
-        LocationData _locationData;
 
-        _serviceEnabled = await location.serviceEnabled();
-        if (!_serviceEnabled) {
-          _serviceEnabled = await location.requestService();
-          if (!_serviceEnabled) {
-            return;
+  var _locationData = UserLocation();
+        var locationServeces = LocationServices();
+        location.requestPermission().then((granted) async {
+          if (granted != null) {
+            var loc = await locationServeces.getCurrentLocation();
+            if (loc != null) {
+              _locationData = loc;
+            }
           }
-        }
+        });
 
-        _permissionGranted = await location.hasPermission();
-        if (_permissionGranted == PermissionStatus.DENIED) {
-          _permissionGranted = await location.requestPermission();
-          if (_permissionGranted != PermissionStatus.GRANTED) {
-            return;
-          }
-        }
-
-        _locationData = await location.getLocation();
+        print("location     :" + _locationData.lat.toString());
       //  var pos = await getLocation();
 
         final categorytems =
-            await Repo.getItemsGategore(event.id, _locationData.longitude, _locationData.latitude);
+            await Repo.getItemsGategore(event.id, _locationData.lon,
+             _locationData.lat);
         yield CategoryItemsLoaded(categoryItem: categorytems);
         return;
       } on SocketException catch (_) {
